@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SD Negeri Citere – Portal Resmi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --hijau: #0f3460;
+  --hijau2: #164e87;
+  --hijau-muda: #e6f0fa;
+  --emas: #ffcc00;         
+  --emas2: #ffb300;        
+  --putih: #fafaf7;
+  --abu: #f4f3ef;
+  --gelap: #0a192f;        
+  --teks: #1b2a41;
+  --muted: #5c6f82;
+  --r: 14px;
+  --shadow: 0 6px 32px rgba(10,25,47,0.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'DM Sans', sans-serif; background: var(--putih); color: var(--teks); overflow-x: hidden; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--hijau2); border-radius: 3px; }
+
+/* ─── NAVBAR ─── */
+#navbar {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+  height: 68px; padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(250,250,247,0.95); backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(10,25,47,0.08); transition: box-shadow 0.3s;
+}
+#navbar.scrolled { box-shadow: 0 2px 24px rgba(10,25,47,0.12); }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon { width: 44px; height: 44px; background: #0f3460; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; color: var(--emas); font-size: 18px; }
+.logo-text { line-height: 1.25; }
+.logo-name { font-size: 14px; font-weight: 600; color: #0f3460; }
+.logo-sub { font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+nav { margin-left: auto; margin-right: 20px; }
+nav ul { display: flex; gap: 4px; list-style: none; align-items: center; }
+nav ul a { display: block; padding: 7px 12px; border-radius: 100px; font-size: 13.5px; font-weight: 500; color: var(--teks); text-decoration: none; transition: all .2s; }
+nav ul a:hover, nav ul a.active { background: #e6f0fa; color: #0f3460; }
+
+.btn-akses-staf { 
+  display: flex; align-items: center; gap: 6px; background: #fff3e0; border: 1px solid #ffe0b2; 
+  color: #e65100; padding: 7px 14px; border-radius: 100px; font-size: 13px; font-weight: 600; 
+  text-decoration: none; transition: all 0.2s; margin-right: 10px;
+}
+.btn-akses-staf:hover { background: #ffe0b2; }
+
+.nav-cta { background: #0f3460; color: #fff !important; padding: 9px 20px; border-radius: 100px; font-size: 13.5px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: #164e87; }
+
+.hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--teks); margin: 5px 0; }
+.mobile-menu { display: none; position: fixed; top: 68px; left: 0; width: 100%; background: var(--putih); z-index: 999; border-bottom: 1px solid rgba(10,25,47,0.1); padding: 16px 20px; flex-direction: column; gap: 4px; }
+.mobile-menu a { display: block; padding: 10px 14px; border-radius: 10px; font-weight: 500; color: var(--teks); text-decoration: none; }
+
+/* ─── HERO ─── */
+#hero { 
+  min-height: 100vh; padding-top: 68px; 
+  background: #0f3460; 
+  display: flex; align-items: center; position: relative; overflow: hidden; 
+}
+.hero-inner { max-width: 1180px; margin: 0 auto; padding: 60px 5%; display: grid; grid-template-columns: 1fr 420px; gap: 50px; align-items: center; position: relative; z-index: 2; }
+
+.hero-badge { 
+  display: inline-flex; align-items: center; gap: 8px; 
+  background: rgba(255, 204, 0, 0.15); border: 1px solid var(--emas); 
+  color: var(--emas); font-size: 11.5px; font-weight: 600; padding: 5px 14px; 
+  border-radius: 100px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+h1.hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(36px, 5vw, 56px); color: #ffffff; line-height: 1.15; margin-bottom: 22px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+h1.hero-title em { color: #ffffff; font-style: normal; font-weight: 400; display: block; margin-top: 4px; }
+
+.hero-desc { color: #e2e8f0; font-size: 16px; font-weight: 400; line-height: 1.7; margin-bottom: 38px; max-width: 520px; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-gold { background: var(--emas); color: #0a192f; padding: 13px 28px; border-radius: 100px; font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 20px rgba(255,179,0,.3); transition: all .2s; }
+.btn-gold:hover { background: var(--emas2); transform: translateY(-2px); }
+.btn-outline { background: transparent; color: #ffffff; border: 1.5px solid rgba(255,255,255,.4); padding: 13px 28px; border-radius: 100px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+.btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+.hero-stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin-top: 40px; }
+.stat-box { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(12px); border-radius: 14px; padding: 18px 20px; }
+.stat-num { font-family: 'DM Serif Display', serif; font-size: 34px; color: var(--emas); font-weight: 700; }
+.stat-lbl { font-size: 12px; color: #cbd5e1; margin-top: 2px; }
+
+.hero-card { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); border-radius: 24px; padding: 36px; backdrop-filter: blur(10px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+.hero-emblem { width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; overflow: hidden; font-size: 42px; }
+.hero-emblem img { width: 100%; height: 100%; object-fit: cover; }
+.hero-card-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: #fff; text-align: center; margin-bottom: 6px; }
+.hero-card-sub { font-size: 13px; color: var(--emas); font-weight: 500; text-align: center; margin-bottom: 24px; letter-spacing: 0.05em; }
+.info-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+.info-icon { width: 32px; height: 32px; background: rgba(255,255,255,.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; }
+.info-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.03em; }
+.info-val { font-size: 14px; color: #ffffff; font-weight: 500; margin-top: 1px; }
+
+/* ─── SECTIONS ─── */
+section { padding: 96px 0; }
+.container { max-width: 1180px; margin: 0 auto; padding: 0 5%; }
+.section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #0f3460; margin-bottom: 14px; }
+.section-label::after { content:''; flex:1; height:1.5px; width: 28px; background: var(--emas2); }
+h2.section-title { font-family: 'DM Serif Display', serif; font-size: clamp(28px, 4vw, 42px); color: var(--gelap); margin-bottom: 16px; }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s, transform .65s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+#sambutan { background: var(--putih); }
+.sambutan-grid { display: grid; grid-template-columns: 280px 1fr; gap: 40px; align-items: start; background: #fff; border-radius: 24px; padding: 40px; border: 1px solid rgba(10,25,47,0.06); box-shadow: var(--shadow); }
+.kepsek-photo-frame { width: 100%; aspect-ratio: 3/4; border-radius: 16px; background: var(--abu); overflow: hidden; border: 3px solid var(--emas); }
+.kepsek-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+.sambutan-text { font-size: 15.5px; line-height: 1.8; color: var(--teks); }
+.kepsek-meta { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.06); }
+.kepsek-name { font-size: 16px; font-weight: 700; color: var(--gelap); }
+.kepsek-title { font-size: 13px; color: var(--muted); }
+
+#tentang { background: var(--abu); }
+.tentang-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.visi-misi-box { background: var(--putih); border-radius: 20px; padding: 32px; border: 1px solid rgba(10,25,47,.06); margin-top: 32px; }
+.vm-tab-row { display: flex; gap: 8px; margin-bottom: 20px; }
+.vm-tab { padding: 7px 18px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid transparent; color: var(--muted); background: var(--abu); transition: all 0.2s; }
+.vm-tab.active { background: #0f3460; color: #fff; border-color: #0f3460; }
+.vm-content { font-size: 14.5px; color: var(--teks); line-height: 1.75; display: none; }
+.vm-content.active { display: block; }
+.vm-content ul { list-style-position: inside; padding-left: 5px; }
+
+.val-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.val-card { background: var(--putih); border: 1px solid rgba(10,25,47,.06); border-radius: 14px; padding: 22px 20px; }
+.val-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+.val-icon img { width: 34px; height: 34px; object-fit: cover; border-radius: 6px; display: block; }
+.val-title { font-size: 14.5px; font-weight: 700; color: var(--gelap); margin-bottom: 6px; }
+.val-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+#program { background: var(--putih); }
+.program-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 48px; }
+.prog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+.prog-card { background: var(--putih); border: 1px solid rgba(10,25,47,.06); border-radius: 20px; overflow: hidden; transition: transform .3s, box-shadow .3s; }
+.prog-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.prog-img { height: 190px; background: #e0e0e0; position: relative; overflow: hidden; }
+.prog-img img { width: 100%; height: 100%; object-fit: cover; }
+.prog-badge { position: absolute; top: 12px; left: 12px; background: #0f3460; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 100px; }
+.prog-body { padding: 22px; }
+.prog-title { font-family: 'DM Serif Display', serif; font-size: 19px; color: var(--gelap); margin-bottom: 8px; }
+.prog-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+
+#berita { background: var(--abu); }
+.berita-layout { display: grid; grid-template-columns: 1.55fr 1fr; gap: 24px; margin-top: 48px; }
+.berita-utama { background: var(--putih); border-radius: 20px; overflow: hidden; border: 1px solid rgba(10,25,47,.06); }
+.berita-img-wrap { height: 280px; background: #e0e0e0; overflow: hidden; position: relative; }
+.berita-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.berita-body { padding: 26px; }
+.berita-meta { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.berita-meta span { padding: 3px 10px; background: #e6f0fa; color: #0f3460; border-radius: 100px; font-weight: 600; }
+.berita-judul { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--gelap); margin-bottom: 10px; }
+.berita-teks { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.berita-list { display: flex; flex-direction: column; gap: 14px; }
+.berita-item { background: var(--putih); border-radius: 14px; padding: 14px; border: 1px solid rgba(10,25,47,.06); display: flex; gap: 14px; cursor: pointer; transition: transform 0.2s; }
+.berita-item:hover { transform: translateX(4px); }
+.berita-item-thumb { width: 85px; height: 85px; border-radius: 10px; background: #e0e0e0; overflow: hidden; flex-shrink: 0; }
+.berita-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.berita-item-title { font-weight: 600; font-size: 13.5px; color: var(--gelap); margin-bottom: 6px; line-height: 1.4; }
+
+#galeri { background: var(--putih); }
+.galeri-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; }
+.galeri-item { border-radius: 14px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); background: #fff; transition: transform .3s, box-shadow .3s; }
+.galeri-item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.galeri-img-frame { height: 200px; background: #e0e0e0; overflow: hidden; }
+.galeri-img-frame img { width: 100%; height: 100%; object-fit: cover; }
+.galeri-body { padding: 16px; }
+.galeri-label { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--gelap); margin-bottom: 6px; }
+.galeri-text { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+#pengurus { background: var(--abu); }
+.pengurus-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; margin-top: 48px; }
+.pengurus-card { background: var(--putih); border-radius: 20px; padding: 28px 18px; text-align: center; border: 1px solid rgba(10,25,47,.06); }
+.pengurus-avatar { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 14px; background: #e0e0e0; border: 3px solid var(--emas); overflow: hidden; }
+.pengurus-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pengurus-nama { font-weight: 700; font-size: 14px; color: var(--gelap); margin-bottom: 2px; }
+.pengurus-jabatan { font-size: 12px; color: #0f3460; font-weight: 600; }
+
+#kalender { background: var(--putih); }
+.kalender-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin-top: 48px; }
+.agenda-list { display: flex; flex-direction: column; gap: 12px; }
+.agenda-item { display: flex; gap: 18px; align-items: flex-start; padding: 18px 20px; background: var(--abu); border-radius: 14px; border-left: 3px solid #0f3460; }
+.agenda-date { background: #0f3460; color: #fff; border-radius: 10px; width: 50px; text-align: center; padding: 8px 4px; }
+.agenda-day { font-family: 'DM Serif Display', serif; font-size: 24px; }
+.agenda-mon { font-size: 10px; text-transform: uppercase; }
+.agenda-title { font-weight: 600; font-size: 14.5px; color: var(--gelap); }
+
+.kalender-mini { background: var(--abu); border-radius: 20px; padding: 28px; border: 1px solid rgba(10,25,47,.06); }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.cal-month { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--gelap); }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; }
+.cal-dayname { font-size: 11px; font-weight: 700; color: var(--muted); padding: 6px 0; }
+.cal-cell { font-size: 13px; padding: 10px 0; color: var(--teks); border-radius: 8px; }
+.cal-cell.event-marked { background: #e6f0fa; color: #0f3460; font-weight: 700; border: 1px solid rgba(15,92,54,0.1); }
+
+#map-section { background: var(--abu); padding: 60px 0; display: none; }
+.map-wrap { border-radius: 20px; overflow: hidden; border: 1px solid rgba(10,25,47,.1); box-shadow: var(--shadow); }
+.map-wrap iframe { display: block; width: 100%; height: 380px; border: 0; }
+
+/* ─── KONTAK ─── */
+#kontak { background: linear-gradient(145deg, #0a192f 0%, #0f3460 100%); color: #fff; }
+.kontak-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; margin-top: 48px; }
+.kontak-info .section-label { color: var(--emas); }
+.kontak-info .section-label::after { background: var(--emas); }
+.kontak-title { font-family: 'DM Serif Display', serif; font-size: 34px; color: #fff; margin-bottom: 16px; }
+.kontak-desc { color: #cbd5e1; font-size: 15px; margin-bottom: 32px; }
+.kontak-row { display: flex; gap: 16px; margin-bottom: 24px; }
+.kontak-icon-box { width: 44px; height: 44px; background: rgba(255,255,255,.08); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--emas); }
+.kontak-val { font-size: 14.5px; color: #fff; }
+
+.sosmed-block { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.15); }
+.sosmed-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--emas); margin-bottom: 15px; }
+.sosmed-flex { display: flex; flex-direction: column; gap: 10px; }
+.sosmed-link-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s ease; }
+.sosmed-link-card:hover { background: rgba(255,255,255,0.15); transform: translateX(6px); }
+
+.kontak-form { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 24px; padding: 40px; backdrop-filter: blur(10px); }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 11px; font-weight: 600; color: rgba(255,255,255,.7); text-transform: uppercase; margin-bottom: 8px; }
+.form-group input, .form-group textarea { width: 100%; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none; }
+.btn-kirim { width: 100%; background: var(--emas); color: #0a192f; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; }
+.btn-kirim:hover { background: var(--emas2); }
+
+/* ─── FOOTER ─── */
+footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px; }
+.footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-brand .logo-name { color: #fff; font-size: 18px; font-family: 'DM Serif Display', serif; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.07); padding-top: 24px; display: flex; justify-content: space-between; font-size: 12.5px; }
+
+#scrollTop { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: #0f3460; color: #fff; border: none; font-size: 18px; cursor: pointer; display: none; align-items: center; justify-content: center; }
+.toast { position: fixed; bottom: 24px; left: 24px; background: #0a192f; color: #fff; padding: 14px 24px; border-radius: 10px; font-size: 13.5px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transform: translateY(100px); opacity: 0; transition: .3s; z-index: 2000; border-left: 4px solid var(--emas); }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+@media (max-width: 1024px) { .hero-inner, .tentang-wrap, .berita-layout, .kalender-layout, .kontak-grid { grid-template-columns: 1fr; } .prog-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 768px) { nav, .btn-akses-staf, .nav-cta, .hero-card, .hero-stats { display: none; } .hamburger { display: block; } .pengurus-grid, .galeri-grid, .prog-grid { grid-template-columns: 1fr; } .val-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; gap: 10px; text-align: center; } }
+</style>
+</head>
+<body>
+
+  <header id="navbar">
+    <a href="#" class="logo">
+      <div class="logo-icon">SD</div>
+      <div class="logo-text">
+        <div class="logo-name">SD Negeri Citere</div>
+        <div class="logo-sub">Kabupaten Bandung • Jawa Barat</div>
+      </div>
+    </a>
+    <nav>
+      <ul id="navLinks">
+        <li><a href="#sambutan">Sambutan</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+        <li><a href="#program">Program</a></li>
+        <li><a href="#berita">Berita</a></li>
+        <li><a href="#galeri">Galeri</a></li>
+        <li><a href="#pengurus">Guru & Staf</a></li>
+        <li><a href="#kalender">Kalender</a></li>
+      </ul>
+    </nav>
+    <a href="#" id="navbarAksesStafBtn" target="_blank" class="btn-akses-staf">🔑 Akses Staf</a>
+    <a href="#kontak" class="nav-cta">Hubungi Kami</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#sambutan">Sambutan</a><a href="#tentang">Tentang</a><a href="#program">Program</a><a href="#berita">Berita</a><a href="#galeri">Galeri</a><a href="#pengurus">Guru & Staf</a><a href="#kalender">Kalender</a><a href="#" id="mobileAksesStafBtn" target="_blank">Akses Staf</a><a href="#kontak">Hubungi Kami</a>
+  </div>
+
+  <section id="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge" id="heroBadgeLabel">Akreditasi B</div>
+        <h1 class="hero-title">Portal Resmi<br><em>Sekolah Dasar Negeri Citere</em></h1>
+        <p class="hero-desc">Membentuk generasi unggul, berkarakter luhur, cerdas, kreatif, dan bertaqwa dengan landasan semangat Merdeka Belajar.</p>
+        <div class="hero-btns">
+          <a href="#sambutan" class="btn-gold">Jelajahi Profil</a><a href="#kontak" class="btn-outline">Hubungi Kami</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-box"><div class="stat-num" id="cntSiswa">0</div><div class="stat-lbl">Siswa Aktif</div></div>
+          <div class="stat-box"><div class="stat-num" id="cntGuru">0</div><div class="stat-lbl">Guru & Staf</div></div>
+          <div class="stat-box"><div class="stat-num" id="cntEkskul">0</div><div class="stat-lbl">Ekstrakurikuler</div></div>
+          <div class="stat-box"><div class="stat-num" id="cntTahun">0</div><div class="stat-lbl">Tahun Berdiri</div></div>
+        </div>
+      </div>
+      
+      <div class="hero-card">
+        <div class="hero-emblem" id="heroEmblemFrame">🏫</div>
+        <div class="hero-card-title" id="heroCardTitle">SDN Citere</div>
+        <div class="hero-card-sub" id="heroCardNpsn">NPSN: 20205165</div>
+        <div class="info-row">
+          <div class="info-icon">📍</div><div><div class="info-label">Alamat</div><div class="info-val" id="heroCardAlamat">Kec. Pangalengan, Kab. Bandung</div></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">👤</div><div><div class="info-label">Kepala Sekolah</div><div class="info-val" id="heroCardKepsek">Yayat Suhayat, S.Pd</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sambutan">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Welcome Message</div>
+        <h2 class="section-title">Sambutan Kepala Sekolah</h2>
+      </div>
+      <div class="sambutan-grid reveal" style="margin-top: 32px;">
+        <div class="kepsek-photo-frame" id="kepsekPhotoWrap">
+          <img src="https://via.placeholder.com/300x400" alt="Foto Kepala Sekolah" id="imgKepsek">
+        </div>
+        <div>
+          <div class="sambutan-text" id="txtSambutan">
+            Selamat datang di portal resmi SD Negeri Citere, Kabupaten Bandung.
+          </div>
+          <div class="kepsek-meta">
+            <div class="kepsek-name" id="lblKepsekNama">Yayat Suhayat, S.Pd</div>
+            <div class="kepsek-title">Kepala Sekolah SD Negeri Citere</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ppdb-section" style="background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%); padding: 45px 0; border-bottom: 1px solid rgba(243,156,18,0.15); display: none;">
+    <div class="container">
+      <div style="background: #ffffff; border: 2px dashed #ffb300; border-radius: 20px; padding: 35px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 25px; box-shadow: 0 4px 20px rgba(255,179,0,0.06);">
+        <div>
+          <span style="background: #ffe0b2; color: #e65100; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.04em;">Penerimaan Peserta Didik Baru (PPDB)</span>
+          <h2 style="font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--gelap); margin-top: 10px; margin-bottom: 5px;">Pendaftaran PPDB Online Telah Resmi Dibuka!</h2>
+          <p style="font-size: 14px; color: var(--muted); max-width: 680px; line-height: 1.6;">Mari bergabung bersama keluarga besar SD Negeri Citere.</p>
+        </div>
+        <div>
+          <a href="#" id="ppdbAnchorLink" target="_blank" class="btn-gold" style="box-shadow: 0 4px 15px rgba(255,179,0,0.3); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">📝 Daftar PPDB Online</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tentang">
+    <div class="container">
+      <div class="tentang-wrap">
+        <div class="reveal">
+          <div class="section-label">Profil Sekolah</div>
+          <h2 class="section-title">Membentuk Masa Depan Cerah Bersama</h2>
+          <div class="visi-misi-box">
+            <div class="vm-tab-row">
+              <div class="vm-tab active" onclick="switchVM('visi')">🎯 Visi</div>
+              <div class="vm-tab" onclick="switchVM('misi')">🚀 Misi</div>
+              <div class="vm-tab" onclick="switchVM('tujuan')">🏁 Tujuan</div>
+            </div>
+            <div class="vm-content active" id="vm-visi">Terwujudnya peserta didik yang beriman, bertakwa, berakhlak mulia, cerdas, berprestasi, dan berwawasan lingkungan.</div>
+            <div class="vm-content" id="vm-misi"><ul><li>Menyelenggarakan pembelajaran aktif, inovatif, dan kreatif.</li><li>Mengembangkan karakter Profil Pelajar Pancasila.</li></ul></div>
+            <div class="vm-content" id="vm-tujuan">Menghasilkan kelulusan siswa dasar cerdas yang mandiri dan berintegritas.</div>
+          </div>
+        </div>
+        <div class="val-grid reveal" id="profileValGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="program"><div class="container"><div class="program-header"><div><div class="section-label">Aktivitas</div><h2 class="section-title">Program Kerja</h2></div></div><div class="prog-grid" id="programGrid"></div></div></section>
+  <section id="berita"><div class="container"><div class="reveal"><div class="section-label">Informasi</div><h2 class="section-title">Berita & Kegiatan Terbaru</h2></div><div class="berita-layout"><div id="beritaUtamaWrap"></div><div class="berita-list" id="beritaList"></div></div></div></section>
+  <section id="galeri"><div class="container"><div class="reveal"><div class="section-label">Dokumentasi</div><h2 class="section-title">Momen Galeri Sekolah</h2></div><div class="galeri-grid" id="galeriGrid"></div></div></section>
+  <section id="pengurus"><div class="container"><div class="reveal"><div class="section-label">Keluarga Besar</div><h2 class="section-title">Dewan Guru & Staf</h2></div><div class="pengurus-grid" id="pengurusGrid"></div></div></section>
+  <section id="kalender"><div class="container"><div class="reveal"><div class="section-label">Jadwal</div><h2 class="section-title">Kalender Akademik</h2></div><div class="kalender-layout"><div class="agenda-list" id="agendaList"></div><div class="kalender-mini"><div class="cal-header"><div class="cal-month">Mei 2026</div></div><div class="cal-grid" id="calGrid"></div></div></div></div></section>
+
+  <section id="map-section"><div class="container"><div class="reveal"><div class="section-label">Lokasi</div><h2 class="section-title">Temukan Kami</h2></div><div class="map-wrap reveal" id="mapWrapContainer" style="margin-top:32px;"></div></div></section>
+
+  <section id="kontak">
+    <div class="container">
+      <div class="kontak-grid">
+        <div class="kontak-info reveal">
+          <div class="section-label">Hubungi Kami</div>
+          <h2 class="kontak-title">Mari Berdiskusi & Bersinergi</h2>
+          <p class="kontak-desc">Pintu sekretariat kami selalu terbuka untuk segala masukan atau pendaftaran siswa baru.</p>
+          <div class="kontak-row"><div class="kontak-icon-box">📍</div><div><div class="kontak-val">SDN Citere, Pangalengan, Bandung</div></div></div>
+          <div class="sosmed-block" id="sosmedBlock">
+            <div class="sosmed-title">Kanal Media Sosial Resmi</div>
+            <div class="sosmed-flex" id="sosmedFlexContainer"></div>
+          </div>
+        </div>
+        <div class="kontak-form reveal">
+          <div class="form-group"><label>Nama Lengkap</label><input type="text" id="fNama" placeholder="Masukkan nama Anda..."></div>
+          <div class="form-group"><label>Alamat Email</label><input type="email" id="fEmail" placeholder="contoh@email.com"></div>
+          <div class="form-group"><label>Isi Pesan Anda</label><textarea id="fPesan" rows="4" placeholder="Tuliskan pesan Anda secara lengkap..."></textarea></div>
+          <button class="btn-kirim" onclick="kirimForm()">Kirim Pesan Konten</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="logo-name">SD Negeri Citere</div><p>Membentuk insan beriman dan cerdas, berkarakter luhur dengan semangat Merdeka Belajar.</p></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 SD Negeri Citere, Kabupaten Bandung By UZM Versi.180526</span></div>
+    </div>
+  </footer>
+
+  <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ3sPsyehsPoUDaYWYONEx5RkgB9YQESeuRzAiivDg3T37sqmr-6Q_rOweQt8KKyAy/exec";
+
+    let DATA = {
+      map: "", heroLogo: "", ppdbUrl: "", aksesStafUrl: "", heroBadge: "Akreditasi B", heroCardName: "SDN Citere", heroNpsn: "20205165", heroCardAlamat: "Kec. Pangalengan, Kab. Bandung", heroCardKepsek: "Yayat Suhayat, S.Pd",
+      profileCard1Icon: "📚", profileCard1Title: "Akademik Unggul", profileCard1Text: "Fokus pada peningkatan literasi, numerasi, dan sains.",
+      profileCard2Icon: "🌱", profileCard2Title: "Karakter Mulia", profileCard2Text: "Membentuk kepribadian berasaskan Profil Pelajar Pancasila.",
+      sosmed: { wa: "628123456789", fb: "", yt: "", ig: "" }, stats: { siswa: 0, guru: 0, ekskul: 0, tahun: 1968 },
+      sambutanKepsek: "", fotoKepsekUrl: "",
+      program: [], berita: [], galeri: [], pengurus: [], agenda: []
+    };
+
+    async function muatKontenWebDariCloud() {
+      try {
+        const response = await fetch(APPS_SCRIPT_URL);
+        const cloudData = await response.json();
+        if (cloudData && Object.keys(cloudData).length > 0) {
+          DATA = cloudData;
+          localStorage.setItem('sdn_citere_data', JSON.stringify(cloudData));
+        }
+      } catch (error) {
+        const localDatabase = localStorage.getItem('sdn_citere_data');
+        if (localDatabase) DATA = JSON.parse(localDatabase);
+      }
+
+      // Sync Akses Staf
+      const navAksesBtn = document.getElementById('navbarAksesStafBtn');
+      const mobAksesBtn = document.getElementById('mobileAksesStafBtn');
+      const stafUrl = DATA.aksesStafUrl || "#";
+      if(navAksesBtn) navAksesBtn.href = stafUrl;
+      if(mobAksesBtn) mobAksesBtn.href = stafUrl;
+
+      // Sync Akreditasi
+      const badgeLabel = document.getElementById('heroBadgeLabel');
+      if(badgeLabel) badgeLabel.textContent = DATA.heroBadge || "Akreditasi B";
+
+      // Sync PPDB
+      const ppdbBox = document.getElementById('ppdb-section');
+      const ppdbBtn = document.getElementById('ppdbAnchorLink');
+      if (DATA.ppdbUrl && DATA.ppdbUrl.trim() !== "") {
+        ppdbBtn.href = DATA.ppdbUrl.trim();
+        ppdbBox.style.display = "block";
+      } else {
+        ppdbBox.style.display = "none";
+      }
+
+      // Sync Sambutan
+      if (DATA.sambutanKepsek) document.getElementById('txtSambutan').textContent = DATA.sambutanKepsek;
+      if (DATA.heroCardKepsek) {
+        document.getElementById('lblKepsekNama').textContent = DATA.heroCardKepsek;
+        document.getElementById('heroCardKepsek').textContent = DATA.heroCardKepsek;
+      }
+      if (DATA.fotoKepsekUrl && DATA.fotoKepsekUrl.trim() !== "") {
+        document.getElementById('imgKepsek').src = DATA.fotoKepsekUrl.trim();
+      }
+
+      renderHeroCardInfo(); renderProfileCards(); renderProgram(); renderBerita(); renderGaleri(); renderPengurus(); renderAgenda(); renderCal(); renderMap(); renderSosmed(); observeReveal();
+
+      // Perbaikan Utama: Membaca murni dari field stats angka
+      const sObj = DATA.stats || { siswa: 0, guru: 0, ekskul: 0, year: 1968 };
+      const tSiswa = parseInt(sObj.siswa) || 0;
+      const tGuru = parseInt(sObj.guru) || 0;
+      const tEkskul = parseInt(sObj.ekskul) || 0;
+      const tTahun = parseInt(sObj.year || sObj.tahun) || 1968;
+
+      setTimeout(() => { 
+        animateCount('cntSiswa', tSiswa); 
+        animateCount('cntGuru', tGuru); 
+        animateCount('cntEkskul', tEkskul); 
+        animateCount('cntTahun', tTahun); 
+      }, 300);
+    }
+
+    document.addEventListener('DOMContentLoaded', muatKontenWebDariCloud);
+
+    const ham = document.getElementById('hamburger'); const mm = document.getElementById('mobileMenu');
+    if(ham) ham.addEventListener('click', () => { mm.style.display = mm.style.display === 'flex' ? 'none' : 'flex'; });
+
+    function switchVM(tab) {
+      document.querySelectorAll('.vm-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.vm-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active'); document.getElementById(`vm-${tab}`).classList.add('active');
+    }
+
+    function renderHeroCardInfo() {
+      const frame = document.getElementById('heroEmblemFrame');
+      if(frame) { 
+        if(DATA.heroLogo && DATA.heroLogo.trim() !== "") { 
+          frame.innerHTML = `<img src="${DATA.heroLogo.trim()}" alt="Logo">`; frame.style.background = "transparent"; 
+        } else { 
+          frame.innerHTML = "🏫"; 
+        } 
+      }
+      document.getElementById('heroCardTitle').textContent = DATA.heroCardName || "SDN Citere";
+      document.getElementById('heroCardNpsn').textContent = DATA.heroNpsn ? "NPSN: " + DATA.heroNpsn : "NPSN: 20205165";
+      document.getElementById('heroCardAlamat').textContent = DATA.heroCardAlamat || "Kec. Pangalengan, Kab. Bandung";
+    }
+
+    function renderProfileCards() {
+      const grid = document.getElementById('profileValGrid'); if(!grid) return;
+      const c1Icon = DATA.profileCard1Icon || "📚"; const c1Title = DATA.profileCard1Title || "Akademik Unggul"; const c1Text = DATA.profileCard1Text || "";
+      const c2Icon = DATA.profileCard2Icon || "🌱"; const c2Title = DATA.profileCard2Title || "Karakter Mulia"; const c2Text = DATA.profileCard2Text || "";
+      grid.innerHTML = `
+        <div class="val-card"><div class="val-icon">${c1Icon.startsWith('http') ? `<img src="${c1Icon}">` : c1Icon}</div><div class="val-title">${c1Title}</div><div class="val-text">${c1Text}</div></div>
+        <div class="val-card"><div class="val-icon">${c2Icon.startsWith('http') ? `<img src="${c2Icon}">` : c2Icon}</div><div class="val-title">${c2Title}</div><div class="val-text">${c2Text}</div></div>`;
+    }
+
+    function formatTextWithReadMore(text, maxLength, index, prefix) {
+      if (!text) return ''; if (text.length <= maxLength) return `<span style="line-height:1.65; display:block;">${text}</span>`;
+      const shortText = text.substring(0, maxLength); const uniqueId = `${prefix}_${index}`;
+      return `<span style="line-height:1.65; display:block;"><span id="short_${uniqueId}">${shortText}...</span><span id="more_${uniqueId}" style="display:none;">${text}</span><a href="#" onclick="toggleReadMoreBlock(event, '${uniqueId}')" id="btn_${uniqueId}" style="color:#0f3460; font-weight:700; text-decoration:none; margin-left:4px; display:inline-block;">[Read More]</a></span>`;
+    }
+
+    function toggleReadMoreBlock(e, id) {
+      e.preventDefault(); const shortSpan = document.getElementById(`short_${id}`); const moreSpan = document.getElementById(`more_${id}`); const btn = document.getElementById(`btn_${id}`);
+      if (moreSpan.style.display === "none") { moreSpan.style.display = "inline"; shortSpan.style.display = "none"; btn.textContent = "[Sembunyikan]"; } else { moreSpan.style.display = "none"; shortSpan.style.display = "inline"; btn.textContent = "[Read More]"; }
+    }
+
+    function renderProgram() {
+      const progs = DATA.program || [];
+      document.getElementById('programGrid').innerHTML = progs.map((p, i) => `<div class="prog-card"><div class="prog-img"><img src="${p.photoUrl || ''}" alt="${p.title}"><span class="prog-badge">${p.badge || 'Program'}</span></div><div class="prog-body"><h3 class="prog-title">${p.title}</h3><div class="prog-desc">${formatTextWithReadMore(p.desc, 110, i, 'prog')}</div></div></div>`).join('');
+    }
+
+    function renderBerita() {
+      const beritaList = DATA.berita || []; if (beritaList.length === 0) return; const ut = beritaList[0];
+      document.getElementById('beritaUtamaWrap').innerHTML = `<div class="berita-utama"><div class="berita-img-wrap"><img src="${ut.photoUrl || ''}" alt="${ut.judul}"></div><div class="berita-body"><div class="berita-meta"><span>${ut.kat}</span>${ut.tgl || ut.tanggal || ''}</div><h3 class="berita-judul">${ut.judul}</h3><div class="berita-teks">${formatTextWithReadMore(ut.desc || ut.teks, 160, 0, 'newsMain')}</div></div></div>`;
+      document.getElementById('beritaList').innerHTML = beritaList.slice(1).map((b, i) => `<div class="berita-item"><div class="berita-item-thumb"><img src="${b.photoUrl || ''}" alt="${b.judul}"></div><div><div class="berita-item-title">${b.judul}</div><div style="font-size:11.5px; color:var(--muted); margin-bottom:5px;"><span>${b.kat}</span> • ${b.tgl || b.tanggal || ''}</div><div style="font-size:12.5px; color:var(--muted);">${formatTextWithReadMore(b.desc || b.teks, 80, i, 'newsList')}</div></div></div>`).join('');
+    }
+
+    function renderGaleri() {
+      const gals = DATA.galeri || [];
+      document.getElementById('galeriGrid').innerHTML = gals.map((g, i) => `<div class="galeri-item"><div class="galeri-img-frame"><img src="${g.photoUrl || ''}" alt="${g.label}"></div><div class="galeri-body"><div class="galeri-label">${g.label}</div><div class="galeri-text">${formatTextWithReadMore(g.desc, 80, i, 'gal')}</div></div></div>`).join('');
+    }
+
+    function renderPengurus() {
+      const staff = DATA.pengurus || [];
+      document.getElementById('pengurusGrid').innerHTML = staff.map(p => `<div class="pengurus-card"><div class="pengurus-avatar"><img src="${p.photoUrl || ''}" alt="${p.nama}"></div><div class="pengurus-nama">${p.nama}</div><div class="pengurus-jabatan">${p.jabatan}</div></div>`).join('');
+    }
+
+    function renderSosmed() {
+      const container = document.getElementById('sosmedFlexContainer'); if(!container) return; const s = DATA.sosmed || { wa: "", fb: "", yt: "", ig: "" }; let html = "";
+      if(s.wa) html += `<a href="${s.wa.startsWith('http') ? s.wa : 'https://wa.me/'+s.wa}" target="_blank" class="sosmed-link-card">🟢 Hubungi via WhatsApp Sekolah</a>`;
+      if(s.fb) html += `<a href="${s.fb}" target="_blank" class="sosmed-link-card">🔵 Kunjungi Facebook Page</a>`;
+      if(s.yt) html += `<a href="${s.yt}" target="_blank" class="sosmed-link-card">🔴 Tonton Saluran YouTube</a>`;
+      if(s.ig) html += `<a href="${s.ig.startsWith('http') ? s.ig : 'https://instagram.com/'+s.ig}" target="_blank" class="sosmed-link-card">📸 Ikuti Instagram Resmi</a>`;
+      container.innerHTML = html;
+    }
+
+    function renderMap() {
+      const section = document.getElementById('map-section'); const container = document.getElementById('mapWrapContainer'); let rawSrc = DATA.map || ""; if(rawSrc.includes('src="')) { const match = rawSrc.match(/src="([^"]+)"/); if(match && match[1]) rawSrc = match[1]; }
+      if(rawSrc.trim() !== "") { container.innerHTML = `<iframe src="${rawSrc}" allowfullscreen="" loading="lazy"></iframe>`; section.style.display = "block"; }
+    }
+
+    function renderAgenda() { document.getElementById('agendaList').innerHTML = DATA.agenda.map(a => `<div class="agenda-item"><div class="agenda-date"><div class="agenda-day">${a.day}</div><div class="agenda-mon">${a.month}</div></div><div><div class="agenda-title">${a.judul}</div><div class="agenda-waktu">${a.waktu}</div></div></div>`).join(''); }
+    function renderCal() { const evDays = DATA.agenda.map(a => parseInt(a.day) || 0); let out = ''; for (let i = 1; i <= 31; i++) { out += `<div class="cal-cell ${evDays.includes(i)?'event-marked':''}">${i}</div>`; } document.getElementById('calGrid').innerHTML = out; }
+    
+    function animateCount(id, target) { 
+      const el = document.getElementById(id); 
+      if(!el) return; 
+      if(target <= 0) { el.textContent = "0"; return; }
+      let start = 0; 
+      const speed = Math.max(1, Math.ceil(target / 30));
+      const timer = setInterval(() => { 
+        start += speed; 
+        if(start >= target) { start = target; clearInterval(timer); } 
+        el.textContent = start; 
+      }, 25); 
+    }
+    
+    const obs = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } }); });
+    function observeReveal() { document.querySelectorAll('.reveal').forEach(r => obs.observe(r)); }
+    function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500); }
+
+    async function kirimForm() {
+      const nama = document.getElementById('fNama').value.trim(); const email = document.getElementById('fEmail').value.trim(); const pesan = document.getElementById('fPesan').value.trim(); if (!nama || !email || !pesan) { showToast('⚠️ Mohon isi semua kolom pesan terlebih dahulu!'); return; }
+      const btn = document.querySelector('.btn-kirim'); btn.textContent = 'Sedang Mengirim...'; btn.disabled = true;
+      try {
+        const dataPayload = new URLSearchParams(); dataPayload.append('action', 'sendMessage'); dataPayload.append('nama', nama); dataPayload.append('email', email); dataPayload.append('pesan', pesan);
+        const response = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: dataPayload, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+        const result = await response.json();
+        if (result.success) { showToast('✅ Sukses! Pesan Anda telah terekam di Cloud Spreadsheet.'); document.getElementById('fNama').value = ''; document.getElementById('fEmail').value = ''; document.getElementById('fPesan').value = ''; } else { showToast('❌ Gagal: ' + result.message); }
+      } catch (error) { showToast('⚠️ Gangguan jaringan.'); } finally { btn.textContent = 'Kirim Pesan Konten'; btn.disabled = false; }
+    }
+
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar'); if (window.scrollY > 20) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+    });
+  </script>
+</body>
+</html>

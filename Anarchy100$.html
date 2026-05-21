@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Admin Resmi – SD Negeri Citere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --biru: #0f3460;
+    --biru-muda: #e6f0fa;
+    --emas: #ffcc00;
+    --gelap: #0a192f;
+    --teks: #1b2a41;
+    --abu: #f4f3ef;
+    --putih: #fafaf7;
+    --radius: 12px;
+    --shadow: 0 6px 24px rgba(10,25,47,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', sans-serif; }
+  body { background: var(--abu); color: var(--teks); min-height: 100vh; display: flex; }
+
+  #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--gelap) 0%, #0f3460 100%); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+  .login-card { background: #fff; padding: 40px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 100%; max-width: 400px; text-align: center; }
+  .login-card h2 { font-family: 'DM Serif Display', serif; color: var(--biru); margin-bottom: 8px; }
+
+  aside { width: 280px; background: var(--gelap); color: #fff; padding: 30px 20px; display: flex; flex-direction: column; position: fixed; height: 100vh; }
+  .admin-logo { margin-bottom: 35px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+  .admin-logo h2 { font-family: 'DM Serif Display', serif; color: var(--emas); font-size: 22px; }
+  .menu-list { list-style: none; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; overflow-y: auto; }
+  .menu-item button { width: 100%; text-align: left; background: none; border: none; color: rgba(255,255,255,0.7); padding: 12px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; }
+  .menu-item button:hover, .menu-item button.active { background: var(--biru); color: #fff; font-weight: 600; }
+  .btn-logout { background: #c0392b !important; color: #fff !important; margin-top: 20px; }
+
+  main { margin-left: 280px; flex: 1; padding: 40px; background: var(--abu); min-height: 100vh; }
+  header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(15,52,96,0.1); padding-bottom: 20px; margin-bottom: 30px; }
+  header h1 { font-family: 'DM Serif Display', serif; color: var(--biru); font-size: 28px; }
+  
+  .btn-save-main { background: var(--biru); color: white; border: none; padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: var(--shadow); }
+  .crud-section { background: #fff; padding: 35px; border-radius: var(--radius); box-shadow: var(--shadow); display: none; }
+  .crud-section.active { display: block; }
+  .section-title { font-family: 'DM Serif Display', serif; color: var(--gelap); margin-bottom: 24px; font-size: 22px; border-left: 4px solid var(--biru); padding-left: 12px; }
+  
+  .form-group { margin-bottom: 18px; text-align: left; }
+  .form-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; color: #5c6f82; }
+  .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #d0d4ce; border-radius: 8px; font-size: 14px; background: var(--putih); color: var(--teks); outline: none; }
+  
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .box-sub { background: var(--biru-muda); padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid rgba(15,52,96,0.1); }
+  
+  .data-list-item { background: var(--putih); border: 1px solid rgba(15,52,96,0.1); padding: 14px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+  .data-info { flex-grow: 1; min-width: 0; }
+  .data-info h4 { font-size: 14px; color: var(--gelap); }
+  .data-info p { font-size: 12px; color: #5c6f82; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; max-width: 100%; }
+  .action-buttons { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn-edit { background: #f39c12; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
+  .btn-delete { background: #c0392b; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
+
+  #toast { position: fixed; bottom: 30px; right: 30px; background: var(--gelap); color: #fff; padding: 16px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-left: 4px solid var(--emas); transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 1000; }
+  #toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+  <div id="login-screen">
+    <div class="login-card">
+      <h2>SDN Citere</h2>
+      <p>Verifikasi Akun via Google Spreadsheet Cloud</p>
+      <div class="form-group"><label>Username</label><input type="text" id="usernameInput"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="passwordInput"></div>
+      <button id="loginBtn" onclick="mencobaLogin()" style="background:var(--biru); color:white; border:none; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">Masuk Dashboard</button>
+    </div>
+  </div>
+
+  <div id="admin-panel" style="display:none; width: 100%;">
+    <aside>
+      <div class="admin-logo"><h2>SDN Citere</h2></div>
+      <ul class="menu-list">
+        <li class="menu-item"><button class="active" onclick="switchTab('stats-section', this)">📊 Identitas Hero & Profil</button></li>
+        <li class="menu-item"><button onclick="switchTab('program-section', this)">✨ Program Kerja</button></li>
+        <li class="menu-item"><button onclick="switchTab('berita-section', this)">📰 Berita & Kegiatan</button></li>
+        <li class="menu-item"><button onclick="switchTab('galeri-section', this)">🖼️ Galeri Momen</button></li>
+        <li class="menu-item"><button onclick="switchTab('pengurus-section', this)">👥 Guru & Staf</button></li>
+        <li class="menu-item"><button onclick="switchTab('kalender-section', this)">📅 Kalender Agenda</button></li>
+        <li class="menu-item"><button onclick="switchTab('inbox-section', this)">📥 Kotak Masuk Pesan</button></li>
+        <li class="menu-item"><button style="color: var(--emas);" onclick="switchTab('backup-section', this)">📥 Backup Data</button></li>
+        <li class="menu-item"><button class="btn-logout" onclick="keluarAdmin()">Log Out</button></li>
+      </ul>
+    </aside>
+
+    <main>
+      <header>
+        <h1>Manajemen Navigasi Konten</h1>
+        <button class="btn-save-main" onclick="saveAllChanges()">Simpan Perubahan Konten</button>
+      </header>
+
+      <div id="stats-section" class="crud-section active">
+        <h3 class="section-title">Konfigurasi Nilai Statistik Counter</h3>
+        <div class="grid-2">
+          <div class="form-group"><label>Jumlah Siswa Aktif</label><input type="number" id="statSiswa"></div>
+          <div class="form-group"><label>Jumlah Pendidik / Guru</label><input type="number" id="statGuru"></div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label>Jumlah Ekstrakurikuler</label><input type="number" id="statEkskul"></div>
+          <div class="form-group"><label>Tahun Berdiri Sekolah</label><input type="number" id="statTahun"></div>
+        </div>
+        
+        <div class="box-sub"><label>🗺️ Google Maps URL Src</label><textarea id="statMap" rows="2"></textarea></div>
+
+        <div class="box-sub" style="background:#e1f5fe; border-color:#b3e5fc;">
+          <h4 style="color:#0288d1; font-size:13px; margin-bottom:12px;">🖼️ Pengaturan Identitas Sekolah (Hero Banner Kanan)</h4>
+          <div class="grid-2">
+            <div class="form-group"><label>Tingkat Akreditasi (Contoh: "Akreditasi A" atau "Akreditasi B")</label><input type="text" id="statHeroBadge"></div>
+            <div class="form-group"><label>URL Link Foto Logo Lingkaran</label><input type="text" id="statHeroLogo"></div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label>Nama Instansi Sekolah di Card</label><input type="text" id="statHeroCardName"></div>
+            <div class="form-group"><label>NPSN Sekolah</label><input type="text" id="statHeroNpsn"></div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label>Alamat Sekolah di Card</label><input type="text" id="statHeroCardAlamat"></div>
+            <div class="form-group"><label>Nama Kepala Sekolah</label><input type="text" id="statHeroCardKepsek"></div>
+          </div>
+          <div class="form-group" style="border-top:1px dashed #b3e5fc; padding-top:14px; margin-top:14px;">
+            <label style="color:#e65100; font-weight: bold;">🔑 URL / Tautan Tombol Akses Staf Navbar & Mobile</label>
+            <input type="text" id="statAksesStafUrl" placeholder="Contoh: https://script.google.com/macros/s/.../exec">
+          </div>
+          <div class="form-group" style="border-top:1px dashed #b3e5fc; padding-top:14px; margin-top:14px;">
+            <label style="color:#2e7d32; font-weight: bold;">🔗 URL Tautan Pendaftaran PPDB Online (Kosongkan jika tutup)</label>
+            <input type="text" id="statPpdbUrl" placeholder="Contoh: https://forms.gle/... atau Link Sistem PPDB">
+          </div>
+        </div>
+
+        <div class="box-sub" style="background:#ede7f6; border-color:#d1c4e9;">
+          <h4 style="color:#5e35b1; font-size:13px; margin-bottom:12px;">💬 Portal Sambutan Kepala Sekolah</h4>
+          <div class="form-group"><label>URL Foto Kepala Sekolah (Portal Sambutan)</label><input type="text" id="statFotoKepsekUrl"></div>
+          <div class="form-group"><label>Isi Teks Deskripsi Sambutan Panjang</label><textarea id="statSambutanKepsek" rows="4" placeholder="Tulis teks sambutan resmi kepala sekolah di sini..."></textarea></div>
+        </div>
+
+        <div class="box-sub" style="background:#fff8e1; border-color:#ffe082;">
+          <h4 style="color:#f57c00; font-size:13px; margin-bottom:12px;">🌟 Pengaturan Teks 2 Kanal Profil Sekolah (Bawah Visi Misi)</h4>
+          <div style="background:rgba(255,255,255,0.6); padding:14px; border-radius:8px; margin-bottom:12px;">
+            <p style="font-weight:700; font-size:12px; margin-bottom:8px; color:#e65100;">Kartu Kiri (Default: Academic Unggul)</p>
+            <div class="form-group"><label>Ikon Kartu 1 (Emoji / URL Gambar)</label><input type="text" id="statC1Icon"></div>
+            <div class="form-group"><label>Judul Kartu 1</label><input type="text" id="statC1Title"></div>
+            <div class="form-group"><label>Deskripsi Pendek Kartu 1</label><textarea id="statC1Text" rows="2"></textarea></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.6); padding:14px; border-radius:8px;">
+            <p style="font-weight:700; font-size:12px; margin-bottom:8px; color:#e65100;">Kartu Kanan (Default: Karakter Mulia)</p>
+            <div class="form-group"><label>Ikon Kartu 2 (Emoji / URL Gambar)</label><input type="text" id="statC2Icon"></div>
+            <div class="form-group"><label>Judul Kartu 2</label><input type="text" id="statC2Title"></div>
+            <div class="form-group"><label>Deskripsi Pendek Kartu 2</label><textarea id="statC2Text" rows="2"></textarea></div>
+          </div>
+        </div>
+
+        <div class="box-sub">
+          <h4 style="color:#2e7d32; font-size:12px; margin-bottom:8px;">📱 Tautan Sosial Media</h4>
+          <div class="grid-2">
+            <div class="form-group"><label>WhatsApp Link</label><input type="text" id="sosWa"></div>
+            <div class="form-group"><label>Facebook Link</label><input type="text" id="sosFb"></div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label>YouTube Link</label><input type="text" id="sosYt"></div>
+            <div class="form-group"><label>Instagram Link</label><input type="text" id="sosIg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="program-section" class="crud-section"><h3 class="section-title">Edit Program Kerja Unggulan</h3><div class="box-sub"><div class="form-group"><label>URL Foto/Gambar Banner Program</label><input type="text" id="progPhotoUrl"></div><div class="grid-2"><div class="form-group"><label>Badge Kategori</label><input type="text" id="progBadge"></div><div class="form-group"><label>Nama Program</label><input type="text" id="progTitle"></div></div><div class="form-group"><label>Deskripsi Lengkap Program</label><textarea id="progDesc" rows="3"></textarea></div><button class="btn-save-main" onclick="addProgramDynamic()">Masukkan Ke Daftar</button></div><div id="programListContainer"></div></div>
+      <div id="berita-section" class="crud-section"><h3 class="section-title">Edit Information Berita & Kegiatan</h3><div class="box-sub"><div class="form-group"><label>URL Foto Sampul Berita</label><input type="text" id="beritaPhotoUrl"></div><div class="form-group"><label>Judul Berita/Kegiatan</label><input type="text" id="beritaJudul"></div><div class="grid-2"><div class="form-group"><label>Kategori</label><input type="text" id="beritaKat"></div><div class="form-group"><label>Tanggal Rilis</label><input type="text" id="beritaTgl"></div></div><div class="form-group"><label>Isi Konten Berita Panjang</label><textarea id="beritaDesc" rows="4"></textarea></div><button class="btn-save-main" onclick="addBeritaDynamic()">Masukkan Ke Daftar</button></div><div id="beritaListContainer"></div></div>
+      <div id="galeri-section" class="crud-section"><h3 class="section-title">Manajemen Dokumentasi Galeri</h3><div class="box-sub"><div class="form-group"><label>URL Gambar Kegiatan</label><input type="text" id="galPhotoUrl"></div><div class="form-group"><label>Nama/Label Momen</label><input type="text" id="galLabel"></div><div class="form-group"><label>Keterangan/Deskripsi Singkat Gambar</label><textarea id="galDesc" rows="2"></textarea></div><button class="btn-save-main" onclick="addGaleriDynamic()">Masukkan Ke Daftar</button></div><div id="galeriListContainer"></div></div>
+      <div id="pengurus-section" class="crud-section"><h3 class="section-title">Daftar Dewan Guru & Staf Pelaksana</h3><div class="box-sub"><div class="form-group"><label>URL Link Foto Profil Resmi</label><input type="text" id="pengPhotoUrl"></div><div class="grid-2"><div class="form-group"><label>Nama Lengkap beserta Gelar</label><input type="text" id="pengNama"></div><div class="form-group"><label>Jabatan/Tugas mengajar</label><input type="text" id="pengJabatan"></div></div><button class="btn-save-main" onclick="addPengurusDynamic()">Masukkan Ke Daftar</button></div><div id="pengurusListContainer"></div></div>
+      <div id="kalender-section" class="crud-section"><h3 class="section-title">Kalender Agenda</h3><div class="box-sub"><div class="grid-2"><div class="form-group"><label>Tanggal (Angka)</label><input type="text" id="ageDay"></div><div class="form-group"><label>Bulan Singkat</label><input type="text" id="ageMonth"></div></div><div class="form-group"><label>Nama Agenda</label><input type="text" id="ageJudul"></div><div class="form-group"><label>Detail Waktu</label><input type="text" id="ageWaktu"></div><button class="btn-save-main" onclick="addAgendaDynamic()">Masukkan Ke Daftar</button></div><div id="agendaListContainer"></div></div>
+      
+      <div id="inbox-section" class="crud-section">
+        <h3 class="section-title">Kotak Masuk Pesan Wali Murid
+          <button onclick="muatPesanMasuk()" style="padding:4px 12px; font-size:12px; background:var(--biru-muda); color:var(--biru); border:none; border-radius:20px; cursor:pointer; margin-left:10px; font-weight:bold;">Segarkan Konten ↻</button>
+        </h3>
+        <div id="containerPesan" style="max-height: 500px; overflow-y: auto; display:flex; flex-direction:column; gap:12px; margin-top:15px;">
+          <p style="color:var(--teks); font-style:italic;">Silakan lakukan login untuk menyelaraskan pesan masuk...</p>
+        </div>
+      </div>
+
+      <div id="backup-section" class="crud-section"><h3 class="section-title">Arsip Cadangan</h3><div class="grid-2"><div><button class="btn-save-main" style="width:100%;" onclick="exportSystemBackup()">Unduh Berkas Cadangan (.json)</button></div><div><input type="file" id="sysFileImporter" accept=".json" style="display:none;" onchange="importSystemBackup(event)"><button class="btn-save-main" style="background:#e67e22; width:100%;" onclick="document.getElementById('sysFileImporter').click()">Muat Berkas Cadangan</button></div></div></div>
+    </main>
+  </div>
+
+  <div id="toast">Data Konten Berhasil Diperbarui!</div>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ3sPsyehsPoUDaYWYONEx5RkgB9YQESeuRzAiivDg3T37sqmr-6Q_rOweQt8KKyAy/exec";
+
+    document.addEventListener("DOMContentLoaded", function() { 
+      if(sessionStorage.getItem("adminCitereSession") === "active") { 
+        bukaPanelKontrol(); 
+      } else { 
+        initBaselineData(); 
+      } 
+    });
+
+    async function mencobaLogin() {
+      const u = document.getElementById("usernameInput").value.trim(); 
+      const p = document.getElementById("passwordInput").value.trim(); 
+      if(!u || !p) return alert("Isi form login!"); 
+      
+      const loginBtn = document.getElementById("loginBtn"); 
+      loginBtn.innerText = "Memverifikasi..."; 
+      loginBtn.disabled = true;
+      
+      const form = new URLSearchParams();
+      form.append("action", "login");
+      form.append("username", u);
+      form.append("password", p);
+
+      try { 
+        const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: form }); 
+        const textRaw = await response.text();
+        
+        let result;
+        try { result = JSON.parse(textRaw); } catch(jsonErr) {
+          alert("❌ Server Google tidak mengirimkan format data JSON.\n\nDetail: " + textRaw.substring(0, 150));
+          return;
+        }
+
+        if(result.success) { 
+          sessionStorage.setItem("adminCitereSession", "active"); 
+          sessionStorage.setItem("userKey", u);
+          sessionStorage.setItem("passKey", p);
+          bukaPanelKontrol(); 
+        } else { alert("Gagal: " + result.message); } 
+      } catch (error) { alert("Error basis data cloud. Periksa kembali status deployment Anda."); } finally {
+        loginBtn.innerText = "Masuk Dashboard"; loginBtn.disabled = false; 
+      }
+    }
+
+    function bukaPanelKontrol() { 
+      document.getElementById("login-screen").style.display = "none"; 
+      document.getElementById("admin-panel").style.display = "flex"; 
+      ambilDataKontenDariCloud();
+      muatPesanMasuk();
+    }
+    
+    function keluarAdmin() { sessionStorage.clear(); window.location.reload(); }
+    function switchTab(sectionId, btn) { 
+      document.querySelectorAll('.crud-section').forEach(s => s.classList.remove('active')); 
+      document.querySelectorAll('.menu-list button').forEach(b => b.classList.remove('active')); 
+      document.getElementById(sectionId).classList.add('active'); btn.classList.add('active'); 
+    }
+    
+    function createRowItemHTML(containerId, title, sub, metaAttr = {}) { 
+      const target = document.getElementById(containerId); 
+      const row = document.createElement('div'); 
+      row.className = 'data-list-item'; 
+      for(let key in metaAttr) { row.setAttribute(key, metaAttr[key]); } 
+      row.innerHTML = `
+        <div class="data-info"><h4>${title}</h4><p>${sub}</p></div>
+        <div class="action-buttons">
+          <button class="btn-edit" onclick="editRowItem(this, '${containerId}')">Edit</button>
+          <button class="btn-delete" onclick="this.closest('.data-list-item').remove()">Hapus</button>
+        </div>`; 
+      target.appendChild(row); 
+    }
+
+    function editRowItem(btn, containerId) {
+      const row = btn.closest('.data-list-item');
+      if (containerId === 'programListContainer') {
+        document.getElementById('progPhotoUrl').value = row.getAttribute('data-photourl') || '';
+        document.getElementById('progBadge').value = row.getAttribute('data-badge') || '';
+        document.getElementById('progTitle').value = row.getAttribute('data-title') || '';
+        document.getElementById('progDesc').value = row.getAttribute('data-desc') || '';
+      } else if (containerId === 'beritaListContainer') {
+        document.getElementById('beritaPhotoUrl').value = row.getAttribute('data-photourl') || '';
+        document.getElementById('beritaJudul').value = row.getAttribute('data-judul') || '';
+        document.getElementById('beritaKat').value = row.getAttribute('data-kat') || '';
+        document.getElementById('beritaTgl').value = row.getAttribute('data-tgl') || '';
+        document.getElementById('beritaDesc').value = row.getAttribute('data-desc') || '';
+      } else if (containerId === 'galeriListContainer') {
+        document.getElementById('galPhotoUrl').value = row.getAttribute('data-photourl') || '';
+        document.getElementById('galLabel').value = row.getAttribute('data-label') || '';
+        document.getElementById('galDesc').value = row.getAttribute('data-desc') || '';
+      } else if (containerId === 'pengurusListContainer') {
+        document.getElementById('pengPhotoUrl').value = row.getAttribute('data-photourl') || '';
+        document.getElementById('pengNama').value = row.getAttribute('data-nama') || '';
+        document.getElementById('pengJabatan').value = row.getAttribute('data-jabatan') || '';
+      } else if (containerId === 'agendaListContainer') {
+        document.getElementById('ageDay').value = row.getAttribute('data-day') || '';
+        document.getElementById('ageMonth').value = row.getAttribute('data-month') || '';
+        document.getElementById('ageJudul').value = row.getAttribute('data-judul') || '';
+        document.getElementById('ageWaktu').value = row.getAttribute('data-waktu') || '';
+      }
+      row.remove();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const ts = document.getElementById('toast'); ts.innerText = "✏️ Data dimuat ke form input di atas."; ts.classList.add('show'); setTimeout(() => ts.classList.remove('show'), 2500);
+    }
+
+    function initBaselineData() {
+      if(!localStorage.getItem('sdn_citere_data')) {
+        const baseline = {
+          map: "", heroLogo: "", ppdbUrl: "", aksesStafUrl: "", heroBadge: "Akreditasi B", heroCardName: "SDN Citere", heroNpsn: "20205165", heroCardAlamat: "Kec. Pasirjambu, Kab. Bandung", heroCardKepsek: "Yayat Suhayat, S.Pd",
+          profileCard1Icon: "📚", profileCard1Title: "Akademik Unggul", profileCard1Text: "Fokus pada peningkatan literasi, numerasi, dan sains.",
+          profileCard2Icon: "🌱", profileCard2Title: "Karakter Mulia", profileCard2Text: "Membentuk kepribadian berasaskan Profil Pelajar Pancasila.",
+          sosmed: { wa: "", fb: "", yt: "", ig: "" }, stats: { siswa: 312, guru: 18, ekskul: 10, tahun: 1968 },
+          sambutanKepsek: "Selamat datang di portal resmi SD Negeri Citere, Kabupaten Bandung...",
+          fotoKepsekUrl: "",
+          program: [], berita: [], galeri: [], pengurus: [], agenda: []
+        };
+        localStorage.setItem('sdn_citere_data', JSON.stringify(baseline));
+      }
+    }
+
+    function addProgramDynamic() { const img = document.getElementById('progPhotoUrl').value.trim(); const bd = document.getElementById('progBadge').value.trim(); const tl = document.getElementById('progTitle').value.trim(); const ds = document.getElementById('progDesc').value.trim(); if(!tl) return alert('Isi nama judul program!'); createRowItemHTML('programListContainer', tl, ds, {'data-photourl': img, 'data-badge': bd, 'data-title': tl, 'data-desc': ds}); document.getElementById('progPhotoUrl').value=''; document.getElementById('progBadge').value=''; document.getElementById('progTitle').value=''; document.getElementById('progDesc').value=''; }
+    function addBeritaDynamic() { const img = document.getElementById('beritaPhotoUrl').value.trim(); const jd = document.getElementById('beritaJudul').value.trim(); const kt = document.getElementById('beritaKat').value.trim(); const tg = document.getElementById('beritaTgl').value.trim(); const ds = document.getElementById('beritaDesc').value.trim(); if(!jd) return alert('Isi judul berita!'); createRowItemHTML('beritaListContainer', jd, kt, {'data-photourl': img, 'data-judul': jd, 'data-kat': kt, 'data-tgl': tg, 'data-desc': ds}); document.getElementById('beritaPhotoUrl').value=''; document.getElementById('beritaJudul').value=''; document.getElementById('beritaKat').value=''; document.getElementById('beritaTgl').value=''; document.getElementById('beritaDesc').value=''; }
+    function addGaleriDynamic() { const img = document.getElementById('galPhotoUrl').value.trim(); const lb = document.getElementById('galLabel').value.trim(); const ds = document.getElementById('galDesc').value.trim(); if(!lb) return alert('Isi nama momen galeri!'); createRowItemHTML('galeriListContainer', lb, ds, {'data-photourl': img, 'data-label': lb, 'data-desc': ds}); document.getElementById('galPhotoUrl').value=''; document.getElementById('galLabel').value=''; document.getElementById('galDesc').value=''; }
+    function addPengurusDynamic() { const img = document.getElementById('pengPhotoUrl').value.trim(); const nm = document.getElementById('pengNama').value.trim(); const jb = document.getElementById('pengJabatan').value.trim(); if(!nm) return alert('Isi nama staf/guru!'); createRowItemHTML('pengurusListContainer', nm, jb, {'data-photourl': img, 'data-nama': nm, 'data-jabatan': jb, 'data-sekolah': 'SDN Citere'}); document.getElementById('pengPhotoUrl').value=''; document.getElementById('pengNama').value=''; document.getElementById('pengJabatan').value=''; }
+    function addAgendaDynamic() { const dy = document.getElementById('ageDay').value.trim(); const mn = document.getElementById('ageMonth').value.trim(); const jd = document.getElementById('ageJudul').value.trim(); const wk = document.getElementById('ageWaktu').value.trim(); if(!jd) return alert('Isi judul agenda!'); createRowItemHTML('agendaListContainer', jd, dy, {'data-day': dy, 'data-month': mn, 'data-judul': jd, 'data-waktu': wk}); document.getElementById('ageDay').value=''; document.getElementById('ageMonth').value=''; document.getElementById('ageJudul').value=''; document.getElementById('ageWaktu').value=''; }
+
+    async function ambilDataKontenDariCloud() {
+      try {
+        const res = await fetch(APPS_SCRIPT_URL);
+        const cloudData = await res.json();
+        if (cloudData && Object.keys(cloudData).length > 0) { localStorage.setItem('sdn_citere_data', JSON.stringify(cloudData)); }
+      } catch (e) { console.warn("Gagal fetching online, beralih ke cache."); }
+      loadDataHydration();
+    }
+
+    function loadDataHydration() {
+      initBaselineData(); const data = JSON.parse(localStorage.getItem('sdn_citere_data'));
+      if(data.stats) { 
+        document.getElementById('statSiswa').value = data.stats.siswa || 0; 
+        document.getElementById('statGuru').value = data.stats.guru || 0; 
+        document.getElementById('statEkskul').value = data.stats.ekskul || 0; 
+        document.getElementById('statTahun').value = data.stats.tahun || data.stats.year || 0; 
+      }
+      document.getElementById('statMap').value = data.map || "";
+      document.getElementById('statHeroLogo').value = data.heroLogo || "";
+      document.getElementById('statPpdbUrl').value = data.ppdbUrl || "";
+      document.getElementById('statAksesStafUrl').value = data.aksesStafUrl || "";
+      document.getElementById('statHeroBadge').value = data.heroBadge || "Akreditasi B";
+      document.getElementById('statHeroCardName').value = data.heroCardName || "SDN Citere";
+      document.getElementById('statHeroNpsn').value = data.heroNpsn || "20205165";
+      document.getElementById('statHeroCardAlamat').value = data.heroCardAlamat || "Kec. Pasirjambu, Kab. Bandung";
+      document.getElementById('statHeroCardKepsek').value = data.heroCardKepsek || "Yayat Suhayat, S.Pd";
+
+      document.getElementById('statSambutanKepsek').value = data.sambutanKepsek || "";
+      document.getElementById('statFotoKepsekUrl').value = data.fotoKepsekUrl || "";
+
+      document.getElementById('statC1Icon').value = data.profileCard1Icon || "📚";
+      document.getElementById('statC1Title').value = data.profileCard1Title || "Akademik Unggul";
+      document.getElementById('statC1Text').value = data.profileCard1Text || "";
+      document.getElementById('statC2Icon').value = data.profileCard2Icon || "🌱";
+      document.getElementById('statC2Title').value = data.profileCard2Title || "Karakter Mulia";
+      document.getElementById('statC2Text').value = data.profileCard2Text || "";
+
+      const sMed = data.sosmed || { wa: "", fb: "", yt: "", ig: "" };
+      document.getElementById('sosWa').value = sMed.wa || ""; document.getElementById('sosFb').value = sMed.fb || ""; document.getElementById('sosYt').value = sMed.yt || ""; document.getElementById('sosIg').value = sMed.ig || "";
+      document.getElementById('programListContainer').innerHTML = ''; document.getElementById('beritaListContainer').innerHTML = ''; document.getElementById('galeriListContainer').innerHTML = ''; document.getElementById('pengurusListContainer').innerHTML = ''; document.getElementById('agendaListContainer').innerHTML = '';
+
+      if(data.program) data.program.forEach(p => createRowItemHTML('programListContainer', p.title, p.desc, {'data-photourl': p.photoUrl, 'data-badge': p.badge, 'data-title': p.title, 'data-desc': p.desc}));
+      if(data.berita) data.berita.forEach(b => createRowItemHTML('beritaListContainer', b.judul, b.kat, {'data-photourl': b.photoUrl, 'data-judul': b.judul, 'data-kat': b.kat, 'data-tgl': b.tgl || b.tanggal, 'data-desc': b.desc}));
+      if(data.galeri) data.galeri.forEach(g => createRowItemHTML('galeriListContainer', g.label, g.desc, {'data-photourl': g.photoUrl, 'data-label': g.label, 'data-desc': g.desc}));
+      if(data.pengurus) data.pengurus.forEach(p => createRowItemHTML('pengurusListContainer', p.nama, p.jabatan, {'data-photourl': p.photoUrl, 'data-nama': p.nama, 'data-jabatan': p.jabatan, 'data-sekolah': p.sekolah}));
+      if(data.agenda) data.agenda.forEach(a => createRowItemHTML('agendaListContainer', a.judul, a.day, {'data-day': a.day, 'data-month': a.month, 'data-judul': a.judul, 'data-waktu': a.waktu}));
+    }
+
+    async function saveAllChanges() {
+      const progArr = []; document.querySelectorAll('#programListContainer .data-list-item').forEach(el => { progArr.push({ photoUrl: el.getAttribute('data-photourl'), badge: el.getAttribute('data-badge'), title: el.getAttribute('data-title'), desc: el.getAttribute('data-desc') }); });
+      const berArr = []; document.querySelectorAll('#beritaListContainer .data-list-item').forEach(el => { berArr.push({ photoUrl: el.getAttribute('data-photourl'), judul: el.getAttribute('data-judul'), kat: el.getAttribute('data-kat'), tgl: el.getAttribute('data-tgl'), desc: el.getAttribute('data-desc') }); });
+      const galArr = []; document.querySelectorAll('#galeriListContainer .data-list-item').forEach(el => { galArr.push({ photoUrl: el.getAttribute('data-photourl'), label: el.getAttribute('data-label'), desc: el.getAttribute('data-desc') }); });
+      const pengArr = []; document.querySelectorAll('#pengurusListContainer .data-list-item').forEach(el => { pengArr.push({ photoUrl: el.getAttribute('data-photourl'), nama: el.getAttribute('data-nama'), jabatan: el.getAttribute('data-jabatan'), sekolah: el.getAttribute('data-sekolah') }); });
+      const ageArr = []; document.querySelectorAll('#agendaListContainer .data-list-item').forEach(el => { ageArr.push({ day: el.getAttribute('data-day'), month: el.getAttribute('data-month'), judul: el.getAttribute('data-judul'), waktu: el.getAttribute('data-waktu') }); });
+
+      const payload = {
+        map: document.getElementById('statMap').value.trim(),
+        heroLogo: document.getElementById('statHeroLogo').value.trim(),
+        ppdbUrl: document.getElementById('statPpdbUrl').value.trim(),
+        aksesStafUrl: document.getElementById('statAksesStafUrl').value.trim(),
+        heroBadge: document.getElementById('statHeroBadge').value.trim(),
+        heroCardName: document.getElementById('statHeroCardName').value.trim(),
+        heroNpsn: document.getElementById('statHeroNpsn').value.trim(),
+        heroCardAlamat: document.getElementById('statHeroCardAlamat').value.trim(),
+        heroCardKepsek: document.getElementById('statHeroCardKepsek').value.trim(),
+        
+        sambutanKepsek: document.getElementById('statSambutanKepsek').value.trim(),
+        fotoKepsekUrl: document.getElementById('statFotoKepsekUrl').value.trim(),
+
+        profileCard1Icon: document.getElementById('statC1Icon').value.trim(),
+        profileCard1Title: document.getElementById('statC1Title').value.trim(),
+        profileCard1Text: document.getElementById('statC1Text').value.trim(),
+        profileCard2Icon: document.getElementById('statC2Icon').value.trim(),
+        profileCard2Title: document.getElementById('statC2Title').value.trim(),
+        profileCard2Text: document.getElementById('statC2Text').value.trim(),
+
+        sosmed: { wa: document.getElementById('sosWa').value.trim(), fb: document.getElementById('sosFb').value.trim(), yt: document.getElementById('sosYt').value.trim(), ig: document.getElementById('sosIg').value.trim() },
+        stats: { siswa: parseInt(document.getElementById('statSiswa').value) || 0, guru: parseInt(document.getElementById('statGuru').value) || 0, ekskul: parseInt(document.getElementById('statEkskul').value) || 0, year: parseInt(document.getElementById('statTahun').value) || 0 },
+        program: progArr, berita: berArr, galeri: galArr, pengurus: pengArr, agenda: ageArr
+      };
+
+      const ts = document.getElementById('toast'); ts.innerText = "⏳ Menyinkronkan perubahan ke Cloud..."; ts.classList.add('show');
+      const form = new URLSearchParams();
+      form.append("action", "saveData");
+      form.append("username", sessionStorage.getItem("userKey") || "");
+      form.append("password", sessionStorage.getItem("passKey") || "");
+      form.append("payload", JSON.stringify(payload));
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: form });
+        const result = await res.json();
+        if (result.success) {
+          localStorage.setItem('sdn_citere_data', JSON.stringify(payload));
+          ts.innerText = "✅ Sukses! Konten terbit secara global.";
+        } else { ts.innerText = "❌ Gagal: " + result.message; }
+      } catch(e) {
+        localStorage.setItem('sdn_citere_data', JSON.stringify(payload));
+        ts.innerText = "⚠️ Gagal Cloud. Data dicadangkan lokal.";
+      }
+      setTimeout(() => ts.classList.remove('show'), 3500);
+    }
+
+    async function muatPesanMasuk() {
+      const container = document.getElementById("containerPesan");
+      const form = new URLSearchParams();
+      form.append("action", "getMessages");
+      form.append("username", sessionStorage.getItem("userKey") || "");
+      form.append("password", sessionStorage.getItem("passKey") || "");
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: form });
+        const resData = await res.json();
+        if (resData.success && resData.data.length > 0) {
+          container.innerHTML = resData.data.map(m => `
+            <div style="background:var(--putih); padding:15px; border-radius:8px; border-left:4px solid var(--biru); box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:5px;">
+                <strong>👨💼 ${m.nama} (${m.email})</strong>
+                <span>📅 ${new Date(m.waktu).toLocaleString('id-ID')}</span>
+              </div>
+              <p style="font-size:14px; color:var(--teks); white-space:pre-line;">${m.pesan}</p>
+            </div>`).join('');
+        } else { container.innerHTML = "<p style='color:var(--muted); text-align:center;'>Belum ada pesan masuk.</p>"; }
+      } catch (e) { container.innerHTML = "<p style='color:#c0392b;'>⚠️ Hubungan ke cloud database terganggu.</p>"; }
+    }
+
+    function exportSystemBackup() { const raw = localStorage.getItem('sdn_citere_data'); if(!raw) return; const blob = new Blob([raw], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `BACKUP_DATABASE.json`; a.click(); }
+    function importSystemBackup(event) { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = function(e) { localStorage.setItem('sdn_citere_data', e.target.result); loadDataHydration(); }; reader.readAsText(file); }
+  </script>
+</body>
+</html>
