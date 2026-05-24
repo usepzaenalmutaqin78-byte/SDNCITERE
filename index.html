@@ -61,20 +61,21 @@ nav ul a {
 nav ul a:hover, nav ul a.active { background: #e6f0fa; color: #0f3460; }
 
 /* Dropdown */
-.has-drop > a { cursor: pointer; }
+.has-drop > a { cursor: pointer; user-select: none; }
 .dropdown {
-  display: none; position: absolute; top: calc(100% + 8px); left: 50%;
+  display: none; position: absolute; top: calc(100% + 6px); left: 50%;
   transform: translateX(-50%);
   background: #fff; border: 1px solid rgba(10,25,47,.1);
   border-radius: 14px; box-shadow: 0 12px 40px rgba(10,25,47,.15);
-  min-width: 180px; padding: 8px; z-index: 200;
+  min-width: 190px; padding: 8px; z-index: 500;
   animation: dropFade .15s ease;
 }
 @keyframes dropFade { from { opacity:0; transform: translateX(-50%) translateY(-6px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
-.has-drop:hover .dropdown { display: block; }
-.dropdown a { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font-size: 13px; color: var(--teks); white-space: nowrap; }
+.has-drop:hover .dropdown,
+.has-drop.open .dropdown { display: block; }
+.dropdown a { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: var(--teks); white-space: nowrap; text-decoration: none; }
 .dropdown a:hover { background: #e6f0fa; color: #0f3460; }
-.dropdown a .dd-icon { font-size: 16px; width: 22px; text-align: center; }
+.dropdown a .dd-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
 
 /* CTA buttons */
 .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
@@ -208,20 +209,28 @@ h2.section-title { font-family: 'DM Serif Display', serif; font-size: clamp(28px
 .program-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 0; flex-wrap: wrap; gap: 16px; }
 
 /* ─── CAROUSEL / SLIDER ─── */
-.carousel-wrap { position: relative; margin-top: 48px; }
+.carousel-wrap { position: relative; margin-top: 48px; padding: 0 32px; }
 .carousel-track-outer { overflow: hidden; border-radius: 20px; }
 .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
-.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1.5px solid rgba(10,25,47,.12); box-shadow: 0 4px 16px rgba(10,25,47,.12); cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all .2s; color: #0f3460; }
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 10; width: 44px; height: 44px; border-radius: 50%;
+  background: #fff; border: 1.5px solid rgba(10,25,47,.14);
+  box-shadow: 0 4px 16px rgba(10,25,47,.12);
+  cursor: pointer; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; color: #0f3460;
+}
 .carousel-btn:hover { background: #0f3460; color: #fff; border-color: #0f3460; }
-.carousel-btn.prev { left: -20px; }
-.carousel-btn.next { right: -20px; }
+.carousel-btn.prev { left: 0; }
+.carousel-btn.next { right: 0; }
 .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
 .carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(15,52,96,.18); cursor: pointer; transition: all .25s; border: none; padding: 0; }
 .carousel-dot.active { background: #0f3460; width: 22px; border-radius: 4px; }
 
 /* Program Carousel */
 #program { background: var(--putih); }
-.prog-slide { flex: 0 0 calc(33.333% - 15px); margin-right: 22px; background: var(--putih); border: 1px solid rgba(10,25,47,.06); border-radius: 20px; overflow: hidden; transition: transform .3s, box-shadow .3s; }
+.prog-slide { flex: 0 0 calc(33.333% - 15px); margin-right: 22px; background: var(--putih); border: 1px solid rgba(10,25,47,.06); border-radius: 20px; overflow: hidden; transition: transform .3s, box-shadow .3s; flex-shrink: 0; }
 .prog-slide:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
 .prog-img { height: 190px; background: #e0e0e0; position: relative; overflow: hidden; }
 .prog-img img { width: 100%; height: 100%; object-fit: cover; }
@@ -440,7 +449,6 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
   .pengurus-grid { grid-template-columns: repeat(3,1fr); }
   .prog-slide { flex: 0 0 calc(50% - 11px); }
   .galeri-slide { flex: 0 0 calc(50% - 10px); }
-  nav ul a { padding: 6px 8px; font-size: 12px; }
 }
 
 /* ═══════════════════════════════════════
@@ -486,8 +494,7 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
 
   .prog-slide { flex: 0 0 100%; margin-right: 0; }
   .galeri-slide { flex: 0 0 100%; margin-right: 0; }
-  .carousel-btn.prev { left: 2px; }
-  .carousel-btn.next { right: 2px; }
+  .carousel-wrap { padding: 0 48px; }
 
   .pengurus-grid { grid-template-columns: repeat(2,1fr); gap: 12px; }
   .pengurus-card { padding: 18px 10px; }
@@ -690,12 +697,10 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
     <div class="container">
       <div class="program-header reveal">
         <div><div class="section-label">Aktivitas</div><h2 class="section-title">Program Kerja Unggulan</h2></div>
-        <div style="display:flex;gap:10px;">
-          <button class="carousel-btn prev" id="progPrev" onclick="moveCarousel('prog',-1)">&#8592;</button>
-          <button class="carousel-btn next" id="progNext" onclick="moveCarousel('prog',1)">&#8594;</button>
-        </div>
       </div>
       <div class="carousel-wrap reveal" style="margin-top:32px;">
+        <button class="carousel-btn prev" id="progPrev" onclick="moveCarousel('prog',-1)" aria-label="Sebelumnya">&#8592;</button>
+        <button class="carousel-btn next" id="progNext" onclick="moveCarousel('prog',1)" aria-label="Berikutnya">&#8594;</button>
         <div class="carousel-track-outer" id="progOuter">
           <div class="carousel-track" id="progTrack"></div>
         </div>
@@ -709,9 +714,9 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
     <div class="container">
       <div class="reveal"><div class="section-label">Informasi</div><h2 class="section-title">Berita & Kegiatan Terbaru</h2></div>
       <div class="berita-slider-wrap reveal">
-        <div class="berita-utama-carousel">
-          <button class="carousel-btn prev" id="beritaPrev" onclick="moveBeritaCarousel(-1)" style="left:-18px;">&#8592;</button>
-          <button class="carousel-btn next" id="beritaNext" onclick="moveBeritaCarousel(1)" style="right:-18px;">&#8594;</button>
+        <div class="berita-utama-carousel" style="position:relative; padding:0 32px;">
+          <button class="carousel-btn prev" id="beritaPrev" onclick="moveBeritaCarousel(-1)" aria-label="Sebelumnya">&#8592;</button>
+          <button class="carousel-btn next" id="beritaNext" onclick="moveBeritaCarousel(1)" aria-label="Berikutnya">&#8594;</button>
           <div class="berita-main-track-outer">
             <div class="berita-main-track" id="beritaMainTrack"></div>
           </div>
@@ -725,14 +730,10 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
   <!-- GALERI – CAROUSEL + LIGHTBOX -->
   <section id="galeri">
     <div class="container">
-      <div class="reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-        <div><div class="section-label">Dokumentasi</div><h2 class="section-title">Momen Galeri Sekolah</h2></div>
-        <div style="display:flex;gap:10px;">
-          <button class="carousel-btn prev" id="galPrev" onclick="moveCarousel('gal',-1)" style="position:static;transform:none;">&#8592;</button>
-          <button class="carousel-btn next" id="galNext" onclick="moveCarousel('gal',1)" style="position:static;transform:none;">&#8594;</button>
-        </div>
-      </div>
+      <div class="reveal"><div class="section-label">Dokumentasi</div><h2 class="section-title">Momen Galeri Sekolah</h2></div>
       <div class="carousel-wrap reveal" style="margin-top:32px;">
+        <button class="carousel-btn prev" id="galPrev" onclick="moveCarousel('gal',-1)" aria-label="Sebelumnya">&#8592;</button>
+        <button class="carousel-btn next" id="galNext" onclick="moveCarousel('gal',1)" aria-label="Berikutnya">&#8594;</button>
         <div class="carousel-track-outer" id="galOuter">
           <div class="carousel-track" id="galTrack"></div>
         </div>
@@ -901,7 +902,14 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
         document.getElementById('imgKepsek').src = DATA.fotoKepsekUrl.trim();
       }
 
-      renderHeroCardInfo(); renderProfileCards(); renderProgram(); renderBerita(); renderGaleri(); renderPengurus(); renderAgenda(); renderCal(); renderMap(); renderSosmed(); renderPengumuman(); renderAkademik(); renderKesiswaan(); renderUnduhan(); renderSarana(); observeReveal();
+      renderHeroCardInfo(); renderProfileCards(); renderProgram(); renderBerita(); renderGaleri(); renderPengurus(); renderAgenda(); renderCal(); renderMap(); renderSosmed(); renderPengumuman(); renderAkademik(); renderKesiswaan(); renderUnduhan(); renderSarana();
+      // Init swipe touch support setelah semua render selesai
+      setTimeout(() => {
+        addSwipeSupport(document.getElementById('progOuter'), 'prog');
+        addSwipeSupport(document.getElementById('galOuter'), 'gal');
+        addSwipeSupport(document.querySelector('.berita-main-track-outer'), 'berita');
+      }, 100);
+      observeReveal();
 
       // Perbaikan Utama: Membaca murni dari field stats angka
       const sObj = DATA.stats || { siswa: 0, guru: 0, ekskul: 0, year: 1968 };
@@ -928,6 +936,34 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
     });
     document.addEventListener('click', e => {
       if(mm.classList.contains('open') && !mm.contains(e.target) && !ham.contains(e.target)) closeMobile();
+    });
+
+    // ── Dropdown: klik/tap untuk tablet & touchscreen ──
+    document.querySelectorAll('.has-drop > a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const li = this.closest('.has-drop');
+        const isOpen = li.classList.contains('open');
+        // Tutup semua dropdown lain
+        document.querySelectorAll('.has-drop.open').forEach(el => el !== li && el.classList.remove('open'));
+        if(!isOpen) {
+          e.preventDefault();
+          li.classList.add('open');
+        } else {
+          li.classList.remove('open');
+        }
+      });
+    });
+    // Klik link di dalam dropdown — tutup dropdown lalu navigasi
+    document.querySelectorAll('.dropdown a').forEach(a => {
+      a.addEventListener('click', () => {
+        document.querySelectorAll('.has-drop.open').forEach(el => el.classList.remove('open'));
+      });
+    });
+    // Klik di luar — tutup semua dropdown
+    document.addEventListener('click', e => {
+      if(!e.target.closest('.has-drop')) {
+        document.querySelectorAll('.has-drop.open').forEach(el => el.classList.remove('open'));
+      }
     });
 
     function switchVM(tab) {
@@ -974,8 +1010,8 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
       const track = document.getElementById('progTrack');
       const dotsEl = document.getElementById('progDots');
       if(!track) return;
-      track.innerHTML = progs.map((p, i) => `<div class="prog-slide"><div class="prog-img"><img src="${p.photoUrl || ''}" alt="${p.title}"><span class="prog-badge">${p.badge || 'Program'}</span></div><div class="prog-body"><h3 class="prog-title">${p.title}</h3><div class="prog-desc">${formatTextWithReadMore(p.desc, 110, i, 'prog')}</div></div></div>`).join('');
-      buildDots('prog', progs.length, 'progDots', 3);
+      track.innerHTML = progs.map((p, i) => `<div class="prog-slide"><div class="prog-img"><img src="${p.photoUrl || ''}" alt="${p.title}" loading="lazy"><span class="prog-badge">${p.badge || 'Program'}</span></div><div class="prog-body"><h3 class="prog-title">${p.title}</h3><div class="prog-desc">${formatTextWithReadMore(p.desc, 110, i, 'prog')}</div></div></div>`).join('');
+      requestAnimationFrame(() => buildDots('prog', progs.length, 'progDots', getVisibleCount('prog')));
     }
 
     function renderBerita() {
@@ -985,7 +1021,7 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
       if(!track) return;
       track.innerHTML = beritaList.map((b, i) => `<div class="berita-main-slide"><div class="berita-img-wrap"><img src="${b.photoUrl || ''}" alt="${b.judul}"></div><div class="berita-body"><div class="berita-meta"><span>${b.kat}</span>${b.tgl || b.tanggal || ''}</div><h3 class="berita-judul">${b.judul}</h3><div class="berita-teks">${formatTextWithReadMore(b.desc || b.teks, 200, i, 'newsMain')}</div></div></div>`).join('');
       if(thumbRow) thumbRow.innerHTML = beritaList.map((b, i) => `<button class="berita-thumb-btn ${i===0?'active':''}" onclick="goBeritaSlide(${i})"><img src="${b.photoUrl || ''}" alt="${b.judul}"><div class="berita-thumb-lbl">${b.judul}</div></button>`).join('');
-      buildDots('berita', beritaList.length, 'beritaDots', 1);
+      requestAnimationFrame(() => buildDots('berita', beritaList.length, 'beritaDots', 1));
     }
 
     let beritaIdx = 0;
@@ -993,9 +1029,12 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
       const list = DATA.berita || []; const n = list.length; if(n===0) return;
       beritaIdx = ((idx % n) + n) % n;
       const track = document.getElementById('beritaMainTrack');
-      if(track) track.style.transform = `translateX(-${beritaIdx * 100}%)`;
+      if(track) {
+        const slideW = track.children[0] ? track.children[0].getBoundingClientRect().width || track.parentElement.offsetWidth : track.parentElement.offsetWidth;
+        track.style.transform = `translateX(-${beritaIdx * slideW}px)`;
+      }
       document.querySelectorAll('.berita-thumb-btn').forEach((b,i) => b.classList.toggle('active', i===beritaIdx));
-      updateDots('berita', beritaIdx, 'beritaDots', 1, n);
+      updateDots('berita', beritaIdx, 'beritaDots');
     }
     function moveBeritaCarousel(dir) { goBeritaSlide(beritaIdx + dir); }
 
@@ -1047,7 +1086,7 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
           </div>
         </div>`;
       }).join('');
-      buildDots('gal', gals.length, 'galDots', 3);
+      requestAnimationFrame(() => buildDots('gal', gals.length, 'galDots', getVisibleCount('gal')));
     }
 
     // ─── LIGHTBOX multi-photo ─────────────────────────
@@ -1237,18 +1276,24 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
 
     function getVisibleCount(carId) {
       if(carId === 'berita') return 1;
-      return window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+      const w = window.innerWidth;
+      if(w <= 600) return 1;
+      if(w <= 1024) return 2;
+      return 3;
     }
 
     function buildDots(carId, totalItems, dotsElId, visibleCount) {
       const dotsEl = document.getElementById(dotsElId);
       if(!dotsEl) return;
-      const pages = Math.max(1, totalItems - visibleCount + 1);
-      carouselState[carId] = { idx: 0, total: totalItems, visibleCount };
-      dotsEl.innerHTML = Array.from({length: pages}, (_,i) => `<button class="carousel-dot ${i===0?'active':''}" onclick="gotoCarouselPage('${carId}', ${i}, '${dotsElId}')"></button>`).join('');
+      const vis = getVisibleCount(carId);
+      const pages = Math.max(1, totalItems - vis + 1);
+      carouselState[carId] = { idx: 0, total: totalItems, visibleCount: vis };
+      dotsEl.innerHTML = Array.from({length: pages}, (_,i) =>
+        `<button class="carousel-dot ${i===0?'active':''}" onclick="gotoCarouselPage('${carId}',${i},'${dotsElId}')"></button>`
+      ).join('');
     }
 
-    function updateDots(carId, idx, dotsElId, visibleCount, total) {
+    function updateDots(carId, idx, dotsElId) {
       const dotsEl = document.getElementById(dotsElId);
       if(!dotsEl) return;
       dotsEl.querySelectorAll('.carousel-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
@@ -1257,10 +1302,9 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
     function gotoCarouselPage(carId, pageIdx, dotsElId) {
       const st = carouselState[carId]; if(!st) return;
       const vis = getVisibleCount(carId);
-      const maxIdx = Math.max(0, st.total - vis);
-      st.idx = Math.min(pageIdx, maxIdx);
-      applyCarouselTransform(carId, vis);
-      updateDots(carId, st.idx, dotsElId, vis, st.total);
+      st.idx = Math.min(Math.max(pageIdx, 0), Math.max(0, st.total - vis));
+      applyCarouselTransform(carId);
+      updateDots(carId, st.idx, dotsElId);
     }
 
     function moveCarousel(carId, dir) {
@@ -1268,25 +1312,44 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
       const vis = getVisibleCount(carId);
       const maxIdx = Math.max(0, st.total - vis);
       st.idx = Math.max(0, Math.min(st.idx + dir, maxIdx));
-      applyCarouselTransform(carId, vis);
-      const dotsElId = carId + 'Dots';
-      updateDots(carId, st.idx, dotsElId, vis, st.total);
+      applyCarouselTransform(carId);
+      updateDots(carId, st.idx, carId + 'Dots');
     }
 
-    function applyCarouselTransform(carId, vis) {
+    function applyCarouselTransform(carId) {
       const track = document.getElementById(carId + 'Track');
       if(!track) return;
-      const outer = document.getElementById(carId + 'Outer');
-      const st = carouselState[carId];
-      const slideWidth = outer ? (outer.offsetWidth + (carId === 'prog' ? 22 : 20)) / vis : 0;
-      track.style.transform = `translateX(-${st.idx * slideWidth}px)`;
+      const st = carouselState[carId]; if(!st) return;
+      // Ukur dari slide pertama yang ada — paling akurat
+      const firstSlide = track.children[0];
+      if(!firstSlide) return;
+      const slideW = firstSlide.getBoundingClientRect().width;
+      const gap = carId === 'prog' ? 22 : 20;
+      track.style.transform = `translateX(-${st.idx * (slideW + gap)}px)`;
+    }
+
+    // Touch swipe support untuk carousel
+    function addSwipeSupport(outerEl, carId) {
+      if(!outerEl) return;
+      let startX = 0, isDragging = false;
+      outerEl.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; }, {passive:true});
+      outerEl.addEventListener('touchend', e => {
+        if(!isDragging) return; isDragging = false;
+        const diff = startX - e.changedTouches[0].clientX;
+        if(Math.abs(diff) > 40) moveCarousel(carId, diff > 0 ? 1 : -1);
+      }, {passive:true});
     }
 
     window.addEventListener('resize', () => {
       ['prog','gal'].forEach(id => {
         const st = carouselState[id]; if(!st) return;
         const vis = getVisibleCount(id);
-        applyCarouselTransform(id, vis);
+        const maxIdx = Math.max(0, st.total - vis);
+        if(st.idx > maxIdx) st.idx = maxIdx;
+        applyCarouselTransform(id);
+        // Rebuild dots sesuai breakpoint baru
+        buildDots(id, st.total, id+'Dots', vis);
+        updateDots(id, st.idx, id+'Dots');
       });
     });
     // ─────────────────────────────────────────────────
