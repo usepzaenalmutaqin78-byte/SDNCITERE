@@ -92,6 +92,7 @@
         <li class="menu-item"><button onclick="switchTab('kesiswaan-section', this)">🏆 Kesiswaan & Ekskul</button></li>
         <li class="menu-item"><button onclick="switchTab('unduhan-section', this)">⬇️ Pusat Unduhan</button></li>
         <li class="menu-item"><button onclick="switchTab('sarana-section', this)">🏫 Sarana & Prasarana</button></li>
+        <li class="menu-item"><button onclick="switchTab('ppdb-admin-section', this)">🎓 Portal PPDB</button></li>
         <li class="menu-item"><button onclick="switchTab('inbox-section', this)">📥 Kotak Masuk Pesan</button></li>
         <li class="menu-item"><button style="color: var(--emas);" onclick="switchTab('backup-section', this)">📥 Backup Data</button></li>
         <li class="menu-item"><button class="btn-logout" onclick="keluarAdmin()">Log Out</button></li>
@@ -333,6 +334,78 @@
           <button class="btn-save-main" onclick="addSaranaDynamic()">Tambahkan Fasilitas</button>
         </div>
         <div id="saranaListContainer"></div>
+      </div>
+
+      <!-- ══ PPDB PORTAL ══ -->
+      <div id="ppdb-admin-section" class="crud-section">
+        <h3 class="section-title">🎓 Manajemen Portal PPDB</h3>
+
+        <div class="box-sub" style="border-left: 3px solid #ffb300;">
+          <p style="font-size:12px;background:#fff3e0;color:#e65100;padding:10px 14px;border-radius:8px;font-weight:700;margin-bottom:16px;">
+            ⚡ <strong>Cara Kerja:</strong> Isi URL pendaftaran → tombol "Daftar PPDB Online" otomatis aktif di portal. Kosongkan URL → status berubah jadi "Pendaftaran Ditutup".
+          </p>
+
+          <div class="form-group">
+            <label style="color:#e65100;font-weight:800;">🔗 URL Link Pendaftaran PPDB Online</label>
+            <input type="text" id="adminPpdbUrl" placeholder="https://forms.gle/... atau https://ppdb.bandungkab.go.id/...">
+            <small style="color:var(--muted);font-size:11.5px;">Kosongkan untuk menutup pendaftaran. Isi untuk membuka.</small>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Judul Banner PPDB</label>
+              <input type="text" id="adminPpdbJudul" placeholder="Pendaftaran PPDB Online Telah Resmi Dibuka!">
+            </div>
+            <div class="form-group">
+              <label>Deskripsi Singkat</label>
+              <input type="text" id="adminPpdbDesc" placeholder="Mari bergabung bersama keluarga besar SD Negeri Citere.">
+            </div>
+          </div>
+        </div>
+
+        <div class="box-sub" style="margin-top:16px;">
+          <p style="font-size:13px;font-weight:700;color:var(--gelap);margin-bottom:14px;">📅 Jadwal & Tanggal Tahapan PPDB</p>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Tanggal Pendaftaran Online</label>
+              <input type="text" id="adminPpdbTglDaftar" placeholder="Contoh: 1 – 15 Juni 2026">
+            </div>
+            <div class="form-group">
+              <label>Tanggal Verifikasi Dokumen</label>
+              <input type="text" id="adminPpdbTglVerifikasi" placeholder="Contoh: 16 – 20 Juni 2026">
+            </div>
+            <div class="form-group">
+              <label>Tanggal Pengumuman Hasil</label>
+              <input type="text" id="adminPpdbTglHasil" placeholder="Contoh: 25 Juni 2026">
+            </div>
+            <div class="form-group">
+              <label>Tanggal Daftar Ulang</label>
+              <input type="text" id="adminPpdbTglDaftarUlang" placeholder="Contoh: 1 – 5 Juli 2026">
+            </div>
+          </div>
+        </div>
+
+        <div class="box-sub" style="margin-top:16px;">
+          <p style="font-size:13px;font-weight:700;color:var(--gelap);margin-bottom:14px;">📋 Persyaratan, Dokumen & Info (satu item per baris)</p>
+          <div class="grid-2" style="grid-template-columns:1fr 1fr 1fr;gap:14px;" id="ppdbThreeCol">
+            <div class="form-group">
+              <label>Persyaratan Umum</label>
+              <textarea id="adminPpdbSyarat" rows="6" placeholder="Usia minimal 6 tahun per 1 Juli&#10;Berdomisili di wilayah sekolah&#10;Tidak terdaftar di SD lain&#10;Sehat jasmani dan rohani"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Dokumen yang Dibutuhkan</label>
+              <textarea id="adminPpdbDokumen" rows="6" placeholder="Fotokopi Akta Kelahiran 2 lembar&#10;Fotokopi Kartu Keluarga 2 lembar&#10;Fotokopi KTP Orang Tua&#10;Pas Foto 3x4 terbaru 4 lembar"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Informasi Penting</label>
+              <textarea id="adminPpdbInfo" rows="6" placeholder="Pendaftaran melalui formulir online&#10;Verifikasi dokumen di sekolah&#10;Gratis biaya pendaftaran&#10;Hasil diumumkan secara online"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <button class="btn-save-main" onclick="savePpdbData()">💾 Simpan Semua Data PPDB</button>
+        </div>
       </div>
 
       <div id="inbox-section" class="crud-section">
@@ -643,6 +716,21 @@
       document.getElementById('statMap').value = data.map || "";
       document.getElementById('statHeroLogo').value = data.heroLogo || "";
       document.getElementById('statPpdbUrl').value = data.ppdbUrl || "";
+      // PPDB detail fields
+      ['adminPpdbUrl','adminPpdbJudul','adminPpdbDesc','adminPpdbTglDaftar','adminPpdbTglVerifikasi','adminPpdbTglHasil','adminPpdbTglDaftarUlang'].forEach(id => {
+        const key = id.replace('admin','').replace(/^P/, 'p'); // adminPpdbUrl → ppdbUrl
+        const el = document.getElementById(id); if(!el) return;
+        // map adminPpdbUrl → ppdbUrl, adminPpdbJudul → ppdbJudul etc
+        const dataKey = id === 'adminPpdbUrl' ? 'ppdbUrl' : id.replace('admin','').replace(/^./, c => c.toLowerCase());
+        el.value = data[dataKey] || '';
+      });
+      // Textarea arrays
+      const syaratEl = document.getElementById('adminPpdbSyarat');
+      const dokEl = document.getElementById('adminPpdbDokumen');
+      const infoEl = document.getElementById('adminPpdbInfo');
+      if(syaratEl && Array.isArray(data.ppdbSyarat)) syaratEl.value = data.ppdbSyarat.join('\n');
+      if(dokEl && Array.isArray(data.ppdbDokumen)) dokEl.value = data.ppdbDokumen.join('\n');
+      if(infoEl && Array.isArray(data.ppdbInfo)) infoEl.value = data.ppdbInfo.join('\n');
       document.getElementById('statAksesStafUrl').value = data.aksesStafUrl || "";
       document.getElementById('statHeroBadge').value = data.heroBadge || "Akreditasi B";
       document.getElementById('statHeroCardName').value = data.heroCardName || "SDN Citere";
@@ -687,6 +775,14 @@
       if(data.sarana) data.sarana.forEach(s => createRowItemHTML('saranaListContainer', s.label, s.jumlah, {'data-photourl': s.photoUrl, 'data-label': s.label, 'data-badge': s.badge, 'data-jumlah': s.jumlah}));
     }
 
+    function savePpdbData() {
+      // Sync adminPpdbUrl → statPpdbUrl agar ikut tersimpan
+      const urlEl = document.getElementById('adminPpdbUrl');
+      const statEl = document.getElementById('statPpdbUrl');
+      if(urlEl && statEl) statEl.value = urlEl.value;
+      saveAllChanges();
+    }
+
     async function saveAllChanges() {
       const progArr = []; document.querySelectorAll('#programListContainer .data-list-item').forEach(el => {
         const photosRaw = el.getAttribute('data-photos') || '';
@@ -715,7 +811,16 @@
       const payload = {
         map: document.getElementById('statMap').value.trim(),
         heroLogo: document.getElementById('statHeroLogo').value.trim(),
-        ppdbUrl: document.getElementById('statPpdbUrl').value.trim(),
+        ppdbUrl: document.getElementById('adminPpdbUrl')?.value.trim() || document.getElementById('statPpdbUrl').value.trim(),
+        ppdbJudul: document.getElementById('adminPpdbJudul')?.value.trim() || '',
+        ppdbDesc: document.getElementById('adminPpdbDesc')?.value.trim() || '',
+        ppdbTglDaftar: document.getElementById('adminPpdbTglDaftar')?.value.trim() || '',
+        ppdbTglVerifikasi: document.getElementById('adminPpdbTglVerifikasi')?.value.trim() || '',
+        ppdbTglHasil: document.getElementById('adminPpdbTglHasil')?.value.trim() || '',
+        ppdbTglDaftarUlang: document.getElementById('adminPpdbTglDaftarUlang')?.value.trim() || '',
+        ppdbSyarat: (document.getElementById('adminPpdbSyarat')?.value || '').split('\n').filter(Boolean),
+        ppdbDokumen: (document.getElementById('adminPpdbDokumen')?.value || '').split('\n').filter(Boolean),
+        ppdbInfo: (document.getElementById('adminPpdbInfo')?.value || '').split('\n').filter(Boolean),
         aksesStafUrl: document.getElementById('statAksesStafUrl').value.trim(),
         heroBadge: document.getElementById('statHeroBadge').value.trim(),
         heroCardName: document.getElementById('statHeroCardName').value.trim(),
