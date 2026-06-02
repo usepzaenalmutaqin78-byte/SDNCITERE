@@ -368,6 +368,123 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
 .toast { position: fixed; bottom: 24px; left: 24px; background: #0a192f; color: #fff; padding: 14px 24px; border-radius: 10px; font-size: 13.5px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transform: translateY(100px); opacity: 0; transition: .3s; z-index: 2000; border-left: 4px solid var(--emas); }
 .toast.show { transform: translateY(0); opacity: 1; }
 
+/* ─── PPDB PORTAL ─── */
+/* PPDB navbar highlight */
+nav ul a.nav-ppdb {
+  background: #fff3e0; color: #e65100 !important;
+  border: 1.5px solid #ffb300; border-radius: 20px;
+  font-weight: 700; padding: 6px 14px;
+  animation: ppdbPulse 2.5s ease-in-out infinite;
+}
+nav ul a.nav-ppdb:hover { background: #ffb300; color: #fff !important; border-color: #ffb300; animation: none; }
+@keyframes ppdbPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,179,0,0); }
+  50% { box-shadow: 0 0 0 6px rgba(255,179,0,0.2); }
+}
+
+#ppdb-section {
+  background: linear-gradient(160deg, #fffbf0 0%, #fff8e8 50%, #ffffff 100%);
+  border-top: 3px solid #ffb300; border-bottom: 3px solid #ffb300;
+  padding: 80px 0;
+}
+.ppdb-banner {
+  background: #ffffff; border: 2.5px dashed #ffb300;
+  border-radius: 24px; padding: 40px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 28px;
+  box-shadow: 0 8px 32px rgba(255,179,0,.10);
+  margin-bottom: 56px;
+}
+.ppdb-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #fff3e0; color: #e65100;
+  font-size: 11px; font-weight: 800; padding: 5px 16px;
+  border-radius: 100px; text-transform: uppercase;
+  letter-spacing: .05em; margin-bottom: 14px;
+}
+.ppdb-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(22px, 3.2vw, 30px); color: var(--gelap);
+  margin-bottom: 8px; line-height: 1.25;
+}
+.ppdb-desc { font-size: 14.5px; color: var(--muted); line-height: 1.65; max-width: 620px; }
+.ppdb-status-open {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #e8f5e9; color: #2e7d32; font-size: 12px;
+  font-weight: 700; padding: 5px 14px; border-radius: 100px; margin-top: 12px;
+}
+.ppdb-status-open::before { content:''; width:8px; height:8px; border-radius:50%; background:#4caf50; animation: ppdbBlink 1.4s ease-in-out infinite; }
+@keyframes ppdbBlink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.ppdb-status-closed {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #fce4ec; color: #c62828; font-size: 12px;
+  font-weight: 700; padding: 5px 14px; border-radius: 100px; margin-top: 12px;
+}
+.ppdb-cta-group { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.btn-ppdb-daftar {
+  background: linear-gradient(135deg, #ffb300, #ff8f00);
+  color: #0a192f; font-size: 15px; font-weight: 800;
+  padding: 14px 32px; border-radius: 100px; border: none;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 9px;
+  box-shadow: 0 6px 24px rgba(255,179,0,.35); cursor: pointer;
+  transition: all .25s; white-space: nowrap;
+}
+.btn-ppdb-daftar:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(255,179,0,.45); }
+.ppdb-closed-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+.ppdb-info-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 40px; }
+.ppdb-info-card {
+  background: #fff; border-radius: 20px; padding: 28px 24px;
+  border: 1px solid rgba(255,179,0,.18);
+  box-shadow: 0 4px 16px rgba(255,179,0,.07);
+  transition: transform .2s, box-shadow .2s;
+}
+.ppdb-info-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(255,179,0,.14); }
+.ppdb-card-icon { font-size: 30px; margin-bottom: 12px; display: block; }
+.ppdb-card-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--gelap); margin-bottom: 12px; }
+.ppdb-card-list { display: flex; flex-direction: column; gap: 8px; }
+.ppdb-card-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.55; }
+.ppdb-card-item::before { content:'✓'; color: #ffb300; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+
+.ppdb-bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.ppdb-jadwal { background: #fff; border-radius: 20px; padding: 32px; border: 1px solid rgba(255,179,0,.2); }
+.ppdb-jadwal-title, .ppdb-faq-title {
+  font-family: 'DM Serif Display', serif; font-size: 20px;
+  color: var(--gelap); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.ppdb-timeline { display: flex; flex-direction: column; gap: 0; }
+.ppdb-tl-item { display: flex; gap: 18px; align-items: flex-start; position: relative; padding-bottom: 20px; }
+.ppdb-tl-item:last-child { padding-bottom: 0; }
+.ppdb-tl-item:not(:last-child)::before { content:''; position: absolute; left: 19px; top: 42px; bottom: 0; width: 2px; background: #ffe0b2; }
+.ppdb-tl-dot { width: 40px; height: 40px; border-radius: 50%; background: #fff3e0; border: 2.5px solid #ffb300; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; z-index: 1; }
+.ppdb-tl-dot.done { background: #ffb300; }
+.ppdb-tl-label { font-size: 10.5px; font-weight: 700; color: #e65100; text-transform: uppercase; letter-spacing: .06em; }
+.ppdb-tl-event { font-weight: 600; font-size: 14px; color: var(--gelap); margin: 2px 0; }
+.ppdb-tl-date { font-size: 12px; color: var(--muted); }
+
+.ppdb-faq { background: #fff; border-radius: 20px; padding: 32px; border: 1px solid rgba(255,179,0,.2); }
+.faq-item { border-bottom: 1px solid rgba(10,25,47,.07); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { width: 100%; background: none; border: none; text-align: left; padding: 15px 0; font-size: 14px; font-weight: 600; color: var(--gelap); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: color .15s; }
+.faq-q:hover { color: #e65100; }
+.faq-chevron { font-size: 18px; transition: transform .25s; color: #ffb300; flex-shrink: 0; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-a { display: none; font-size: 13.5px; color: var(--muted); line-height: 1.7; padding-bottom: 15px; }
+.faq-item.open .faq-a { display: block; }
+
+@media (max-width: 860px) {
+  .ppdb-info-grid { grid-template-columns: 1fr 1fr; }
+  .ppdb-bottom-grid { grid-template-columns: 1fr; }
+  .ppdb-banner { padding: 28px 24px; }
+  .ppdb-cta-group { align-items: flex-start; }
+}
+@media (max-width: 600px) {
+  .ppdb-info-grid { grid-template-columns: 1fr; }
+  .ppdb-banner { flex-direction: column; padding: 22px 18px; }
+  #ppdb-section { padding: 56px 0; }
+}
+
 /* ─── PENGUMUMAN ─── */
 #pengumuman { background: var(--abu); }
 .peng-list { display: flex; flex-direction: column; gap: 14px; margin-top: 40px; }
@@ -565,6 +682,7 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
           </div>
         </li>
         <li><a href="#pengumuman">Pengumuman</a></li>
+        <li><a href="#ppdb-section" class="nav-ppdb">🎓 PPDB</a></li>
         <li><a href="#kontak">Kontak</a></li>
       </ul>
     </nav>
@@ -596,6 +714,7 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
     <a href="#galeri" onclick="closeMobile()">🖼️ Galeri Foto</a>
     <div class="m-divider">Lainnya</div>
     <a href="#pengumuman" onclick="closeMobile()">📢 Pengumuman</a>
+    <a href="#ppdb-section" onclick="closeMobile()" style="background:#fff3e0;color:#e65100 !important;font-weight:700;border-radius:10px;margin-top:4px;">🎓 PPDB — Daftar Sekarang</a>
     <a href="#kontak" onclick="closeMobile()">📍 Kontak &amp; Lokasi</a>
     <a href="#" id="mobileAksesStafBtn" target="_blank" class="m-staf" onclick="closeMobile()">🔑 Akses Staf</a>
     <a href="#kontak" class="m-cta" onclick="closeMobile()">Hubungi Kami</a>
@@ -655,18 +774,154 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
     </div>
   </section>
 
-  <section id="ppdb-section" style="background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%); padding: 45px 0; border-bottom: 1px solid rgba(243,156,18,0.15); display: none;">
+  <!-- ══════════════════════════════════
+       PPDB PORTAL SECTION
+       ══════════════════════════════════ -->
+  <section id="ppdb-section">
     <div class="container">
-      <div style="background: #ffffff; border: 2px dashed #ffb300; border-radius: 20px; padding: 35px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 25px; box-shadow: 0 4px 20px rgba(255,179,0,0.06);">
+
+      <!-- Banner Utama -->
+      <div class="ppdb-banner reveal">
         <div>
-          <span style="background: #ffe0b2; color: #e65100; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.04em;">Penerimaan Peserta Didik Baru (PPDB)</span>
-          <h2 style="font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--gelap); margin-top: 10px; margin-bottom: 5px;">Pendaftaran PPDB Online Telah Resmi Dibuka!</h2>
-          <p style="font-size: 14px; color: var(--muted); max-width: 680px; line-height: 1.6;">Mari bergabung bersama keluarga besar SD Negeri Citere.</p>
+          <div class="ppdb-badge">🎓 Penerimaan Peserta Didik Baru (PPDB)</div>
+          <h2 class="ppdb-title" id="ppdbMainTitle">Pendaftaran PPDB Online Telah Resmi Dibuka!</h2>
+          <p class="ppdb-desc" id="ppdbMainDesc">Mari bergabung bersama keluarga besar SD Negeri Citere. Daftarkan putra-putri terbaik Anda sekarang!</p>
+          <div class="ppdb-status-open" id="ppdbStatusBadge">Pendaftaran Sedang Dibuka</div>
         </div>
-        <div>
-          <a href="#" id="ppdbAnchorLink" target="_blank" class="btn-gold" style="box-shadow: 0 4px 15px rgba(255,179,0,0.3); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">📝 Daftar PPDB Online</a>
+        <div class="ppdb-cta-group">
+          <a href="#" id="ppdbAnchorLink" target="_blank" class="btn-ppdb-daftar">📝 Daftar PPDB Online</a>
+          <span class="ppdb-closed-note" id="ppdbClosedNote" style="display:none;">Pendaftaran saat ini ditutup.<br>Pantau terus untuk informasi selanjutnya.</span>
         </div>
       </div>
+
+      <!-- Grid Info: Persyaratan, Dokumen, Ketentuan -->
+      <div class="ppdb-info-grid">
+        <div class="ppdb-info-card reveal">
+          <span class="ppdb-card-icon">📋</span>
+          <div class="ppdb-card-title">Persyaratan Umum</div>
+          <div class="ppdb-card-list" id="ppdbSyaratList">
+            <div class="ppdb-card-item">Usia minimal 6 tahun per 1 Juli tahun berjalan</div>
+            <div class="ppdb-card-item">Berdomisili di wilayah atau sekitar sekolah</div>
+            <div class="ppdb-card-item">Tidak sedang terdaftar di SD lain</div>
+            <div class="ppdb-card-item">Sehat jasmani dan rohani</div>
+          </div>
+        </div>
+        <div class="ppdb-info-card reveal">
+          <span class="ppdb-card-icon">📂</span>
+          <div class="ppdb-card-title">Dokumen yang Dibutuhkan</div>
+          <div class="ppdb-card-list" id="ppdbDokumenList">
+            <div class="ppdb-card-item">Fotokopi Akta Kelahiran (2 lembar)</div>
+            <div class="ppdb-card-item">Fotokopi Kartu Keluarga (2 lembar)</div>
+            <div class="ppdb-card-item">Fotokopi KTP Orang Tua/Wali</div>
+            <div class="ppdb-card-item">Pas Foto 3×4 terbaru (4 lembar)</div>
+            <div class="ppdb-card-item">Surat Keterangan Domisili (bila diperlukan)</div>
+          </div>
+        </div>
+        <div class="ppdb-info-card reveal">
+          <span class="ppdb-card-icon">ℹ️</span>
+          <div class="ppdb-card-title">Informasi Penting</div>
+          <div class="ppdb-card-list" id="ppdbInfoList">
+            <div class="ppdb-card-item">Pendaftaran online melalui link formulir resmi</div>
+            <div class="ppdb-card-item">Verifikasi dokumen dilakukan di sekolah</div>
+            <div class="ppdb-card-item">Gratis biaya pendaftaran</div>
+            <div class="ppdb-card-item">Pengumuman hasil diumumkan secara online</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jadwal & FAQ -->
+      <div class="ppdb-bottom-grid">
+
+        <!-- Jadwal Timeline -->
+        <div class="ppdb-jadwal reveal">
+          <div class="ppdb-jadwal-title">📅 Jadwal & Tahapan PPDB</div>
+          <div class="ppdb-timeline" id="ppdbTimeline">
+            <div class="ppdb-tl-item">
+              <div class="ppdb-tl-dot done">✓</div>
+              <div class="ppdb-tl-body">
+                <div class="ppdb-tl-label">Tahap 1</div>
+                <div class="ppdb-tl-event">Pengumuman Pembukaan PPDB</div>
+                <div class="ppdb-tl-date">Hubungi sekolah untuk info tanggal</div>
+              </div>
+            </div>
+            <div class="ppdb-tl-item">
+              <div class="ppdb-tl-dot">📝</div>
+              <div class="ppdb-tl-body">
+                <div class="ppdb-tl-label">Tahap 2</div>
+                <div class="ppdb-tl-event">Pendaftaran Online &amp; Pengumpulan Berkas</div>
+                <div class="ppdb-tl-date" id="ppdbTglDaftar">Sesuai pengumuman resmi sekolah</div>
+              </div>
+            </div>
+            <div class="ppdb-tl-item">
+              <div class="ppdb-tl-dot">✅</div>
+              <div class="ppdb-tl-body">
+                <div class="ppdb-tl-label">Tahap 3</div>
+                <div class="ppdb-tl-event">Verifikasi Dokumen di Sekolah</div>
+                <div class="ppdb-tl-date" id="ppdbTglVerifikasi">Sesuai jadwal yang ditentukan</div>
+              </div>
+            </div>
+            <div class="ppdb-tl-item">
+              <div class="ppdb-tl-dot">🏆</div>
+              <div class="ppdb-tl-body">
+                <div class="ppdb-tl-label">Tahap 4</div>
+                <div class="ppdb-tl-event">Pengumuman Hasil Seleksi</div>
+                <div class="ppdb-tl-date" id="ppdbTglHasil">Sesuai jadwal yang ditentukan</div>
+              </div>
+            </div>
+            <div class="ppdb-tl-item">
+              <div class="ppdb-tl-dot">📚</div>
+              <div class="ppdb-tl-body">
+                <div class="ppdb-tl-label">Tahap 5</div>
+                <div class="ppdb-tl-event">Daftar Ulang &amp; Awal Tahun Pelajaran</div>
+                <div class="ppdb-tl-date" id="ppdbTglDaftarUlang">Sesuai jadwal yang ditentukan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="ppdb-faq reveal">
+          <div class="ppdb-faq-title">❓ Pertanyaan Umum (FAQ)</div>
+          <div id="ppdbFaqContainer">
+            <div class="faq-item">
+              <button class="faq-q" onclick="toggleFaq(this)">
+                Berapa kuota penerimaan siswa baru?
+                <span class="faq-chevron">▾</span>
+              </button>
+              <div class="faq-a">Kuota penerimaan disesuaikan dengan kapasitas kelas yang tersedia. Hubungi sekolah untuk informasi kuota terkini setiap tahun ajaran.</div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="toggleFaq(this)">
+                Apakah ada tes masuk untuk siswa baru?
+                <span class="faq-chevron">▾</span>
+              </button>
+              <div class="faq-a">Penerimaan siswa baru tidak menggunakan tes akademik. Seleksi dilakukan berdasarkan usia, domisili, dan ketersediaan tempat sesuai ketentuan dinas pendidikan.</div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="toggleFaq(this)">
+                Bagaimana cara mendaftar secara online?
+                <span class="faq-chevron">▾</span>
+              </button>
+              <div class="faq-a">Klik tombol "Daftar PPDB Online" di atas untuk mengisi formulir pendaftaran. Lengkapi semua data yang diminta, unggah dokumen yang diperlukan, dan simpan nomor pendaftaran Anda.</div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="toggleFaq(this)">
+                Apakah biaya pendaftaran gratis?
+                <span class="faq-chevron">▾</span>
+              </button>
+              <div class="faq-a">Ya, pendaftaran PPDB di SD Negeri Citere sepenuhnya gratis sesuai kebijakan sekolah negeri. Tidak ada pungutan biaya apapun dalam proses pendaftaran.</div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="toggleFaq(this)">
+                Dimana lokasi sekolah dan cara menghubungi?
+                <span class="faq-chevron">▾</span>
+              </button>
+              <div class="faq-a">SD Negeri Citere berlokasi di Kec. Citere RT 04 RW 16 Desa Sukamanah, Kec. Pangalengan, Kab. Bandung, Provinsi Jawa Barat. Hubungi kami melalui halaman Kontak di website ini atau datang langsung ke sekolah.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /ppdb-bottom-grid -->
     </div>
   </section>
 
@@ -850,6 +1105,8 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
 
     let DATA = {
       map: "", heroLogo: "", ppdbUrl: "", aksesStafUrl: "", heroBadge: "Akreditasi B", heroCardName: "SDN Citere", heroNpsn: "20205165", heroCardAlamat: "Kec. Pangalengan, Kab. Bandung", heroCardKepsek: "Yayat Suhayat, S.Pd",
+      ppdbJudul: "", ppdbDesc: "", ppdbTglDaftar: "", ppdbTglVerifikasi: "", ppdbTglHasil: "", ppdbTglDaftarUlang: "",
+      ppdbSyarat: [], ppdbDokumen: [], ppdbInfo: [],
       profileCard1Icon: "📚", profileCard1Title: "Akademik Unggul", profileCard1Text: "Fokus pada peningkatan literasi, numerasi, dan sains.",
       profileCard2Icon: "🌱", profileCard2Title: "Karakter Mulia", profileCard2Text: "Membentuk kepribadian berasaskan Profil Pelajar Pancasila.",
       sosmed: { wa: "628123456789", fb: "", yt: "", ig: "" }, stats: { siswa: 0, guru: 0, ekskul: 0, tahun: 1968 },
@@ -883,14 +1140,7 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
       if(badgeLabel) badgeLabel.textContent = DATA.heroBadge || "Akreditasi B";
 
       // Sync PPDB
-      const ppdbBox = document.getElementById('ppdb-section');
-      const ppdbBtn = document.getElementById('ppdbAnchorLink');
-      if (DATA.ppdbUrl && DATA.ppdbUrl.trim() !== "") {
-        ppdbBtn.href = DATA.ppdbUrl.trim();
-        ppdbBox.style.display = "block";
-      } else {
-        ppdbBox.style.display = "none";
-      }
+      renderPpdb();
 
       // Sync Sambutan
       if (DATA.sambutanKepsek) document.getElementById('txtSambutan').textContent = DATA.sambutanKepsek;
@@ -1268,6 +1518,55 @@ footer { background: #0a192f; color: rgba(255,255,255,.5); padding: 48px 0 32px;
         </div>
         <div class="sarana-body"><div class="sarana-label">${s.label}</div><div class="sarana-count">${s.jumlah||''}</div></div>
       </div>`).join('');
+    }
+
+    // ─────────────────────────────────────────────────
+    // ─── RENDER PPDB ──────────────────────────────────
+    function renderPpdb() {
+      const d = DATA;
+      const btn = document.getElementById('ppdbAnchorLink');
+      const statusBadge = document.getElementById('ppdbStatusBadge');
+      const closedNote = document.getElementById('ppdbClosedNote');
+      const mainTitle = document.getElementById('ppdbMainTitle');
+      const mainDesc = document.getElementById('ppdbMainDesc');
+
+      // Judul & deskripsi dari DATA jika ada
+      if(d.ppdbJudul) mainTitle.textContent = d.ppdbJudul;
+      if(d.ppdbDesc) mainDesc.textContent = d.ppdbDesc;
+
+      // Jadwal dari DATA
+      const fields = [['ppdbTglDaftar','ppdbTglDaftar'],['ppdbTglVerifikasi','ppdbTglVerifikasi'],['ppdbTglHasil','ppdbTglHasil'],['ppdbTglDaftarUlang','ppdbTglDaftarUlang']];
+      fields.forEach(([dataKey, elId]) => { if(d[dataKey]) { const el=document.getElementById(elId); if(el) el.textContent=d[dataKey]; } });
+
+      // Status buka/tutup berdasarkan ppdbUrl
+      if(d.ppdbUrl && d.ppdbUrl.trim()) {
+        btn.href = d.ppdbUrl.trim();
+        btn.style.display = 'inline-flex';
+        if(statusBadge) { statusBadge.className = 'ppdb-status-open'; statusBadge.textContent = 'Pendaftaran Sedang Dibuka'; }
+        if(closedNote) closedNote.style.display = 'none';
+      } else {
+        btn.style.display = 'none';
+        if(statusBadge) { statusBadge.className = 'ppdb-status-closed'; statusBadge.innerHTML = '⛔ Pendaftaran Belum / Sudah Ditutup'; }
+        if(closedNote) closedNote.style.display = 'block';
+      }
+
+      // Persyaratan dinamis dari DATA
+      function renderChecklist(listId, dataArr) {
+        if(!dataArr || !dataArr.length) return;
+        const el = document.getElementById(listId);
+        if(!el) return;
+        el.innerHTML = dataArr.map(t => `<div class="ppdb-card-item">${t}</div>`).join('');
+      }
+      renderChecklist('ppdbSyaratList', d.ppdbSyarat);
+      renderChecklist('ppdbDokumenList', d.ppdbDokumen);
+      renderChecklist('ppdbInfoList', d.ppdbInfo);
+    }
+
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
     }
 
     // ─────────────────────────────────────────────────
